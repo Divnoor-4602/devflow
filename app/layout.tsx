@@ -5,6 +5,7 @@ import { neobrutalism } from "@clerk/themes";
 import "./global.css";
 
 import type { Metadata } from "next";
+import { ThemeProvider } from "@/context/ThemeProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -36,9 +37,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     >
       <html>
         <body className={`${inter.variable} ${spaceGrotesk.variable} `}>
-          <main className="flex min-h-screen items-center justify-center">
-            {children}
-          </main>
+          <ThemeProvider>
+            <main className="flex min-h-screen items-center justify-center">
+              {children}
+            </main>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
