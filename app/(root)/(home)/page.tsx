@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import LocalSelectFilter from "@/components/shared/filter/LocalSelectFilter";
+import HomeFilterBadges from "@/components/shared/filter/HomeFilterBadges";
 
 export default function Home() {
   return (
@@ -27,7 +28,15 @@ export default function Home() {
           placeholderText="Search questions"
           otherClasses="flex-1"
         />
+
+        <LocalSelectFilter
+          route="/"
+          filterList={["Newest", "Reccomended", "Frequent", "Unanswered"]}
+        />
       </div>
+      <HomeFilterBadges
+        filterList={["Newest", "Reccomended", "Frequent", "Unanswered"]}
+      />
     </>
   );
 }
