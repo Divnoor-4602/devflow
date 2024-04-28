@@ -4,6 +4,61 @@ import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import LocalSelectFilter from "@/components/shared/filter/LocalSelectFilter";
 import HomeFilterBadges from "@/components/shared/filter/HomeFilterBadges";
 
+const questions = [
+  {
+    _id: 1,
+    question:
+      "The Lightning Component c:LWC_PizzaTracker generated invalid output for field status. Error How to solve this",
+    tags: ["javascript", "react", "next"],
+    author: "John Doe",
+    upvotes: 10,
+    views: 100,
+    answers: 3,
+    createdAt: "2021-09-01T00:00:00.000Z",
+  },
+  {
+    _id: 2,
+    question: "How to use hooks in React?",
+    tags: ["react", "hooks"],
+    author: "Jane Smith",
+    upvotes: 5,
+    views: 50,
+    answers: 2,
+    createdAt: "2021-09-02T00:00:00.000Z",
+  },
+  {
+    _id: 3,
+    question:
+      "What is the difference between var, let, and const in JavaScript?",
+    tags: ["javascript"],
+    author: "Bob Johnson",
+    upvotes: 8,
+    views: 80,
+    answers: 4,
+    createdAt: "2021-09-03T00:00:00.000Z",
+  },
+  {
+    _id: 4,
+    question: "How to handle form submission in React?",
+    tags: ["react", "forms"],
+    author: "Alice Brown",
+    upvotes: 3,
+    views: 30,
+    answers: 1,
+    createdAt: "2021-09-04T00:00:00.000Z",
+  },
+  {
+    _id: 5,
+    question: "What are the best practices for writing clean code?",
+    tags: ["programming", "best practices"],
+    author: "David Wilson",
+    upvotes: 12,
+    views: 120,
+    answers: 6,
+    createdAt: "2021-09-05T00:00:00.000Z",
+  },
+];
+
 export default function Home() {
   return (
     <>
@@ -37,6 +92,9 @@ export default function Home() {
       <HomeFilterBadges
         filterList={["Newest", "Reccomended", "Frequent", "Unanswered"]}
       />
+
+      {/* Question cards */}
+      <div className="mt-10 flex flex-col gap-6"></div>
     </>
   );
 }
