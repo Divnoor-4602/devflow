@@ -27,7 +27,7 @@ const RightSidebar = () => {
 
   return (
     <>
-      <div className="background-light900_dark200 light-border custom-scrollbar sticky right-0 top-0 hidden h-screen w-[300px] flex-col overflow-y-auto border-l px-4 pt-32 font-inter shadow-sm xl:flex">
+      <div className="background-light900_dark200 light-border custom-scrollbar sticky right-0 top-0 hidden h-screen w-[300px] flex-col overflow-y-auto border-l px-4 pb-4 pt-32 font-inter shadow-sm xl:flex">
         {/* Question */}
         <div className="text-dark200_light900 h3-bold">Top Questions</div>
         {/* top few popular questions */}
@@ -57,7 +57,7 @@ const RightSidebar = () => {
                 key={tag._id}
                 className="flex w-full items-center justify-between"
               >
-                <div className="background-light800_dark300 subtle-medium w-fit rounded-lg px-4 py-2 uppercase text-light-400 dark:text-light-500">
+                <div className="background-light800_dark300 subtle-medium w-fit rounded-lg px-4 py-2 uppercase text-light-400 shadow-md dark:text-light-500">
                   {tag.name}
                 </div>
                 <div className="text-dark500_light700 small-medium">

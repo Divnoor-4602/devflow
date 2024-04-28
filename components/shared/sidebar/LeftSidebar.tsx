@@ -17,7 +17,7 @@ const LeftSidebar = () => {
 
   return (
     <>
-      <div className="background-light900_dark200 text-dark200_light900 light-border sm:flex-between custom-scrollbar sticky left-0 top-0   hidden min-h-screen w-fit flex-col border-r p-6  pt-32 lg:w-[266px]">
+      <div className="background-light900_dark200 text-dark200_light900 light-border sm:flex-between custom-scrollbar sticky left-0 top-0   hidden h-screen w-fit flex-col border-r p-6  pt-32 lg:w-[266px]">
         {/* sidebar nav */}
         <div className="flex flex-col gap-4 lg:w-full">
           {/* Sidebar links */}

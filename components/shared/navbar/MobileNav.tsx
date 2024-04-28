@@ -113,10 +113,10 @@ const MobileNav = () => {
               </SignedOut>
               <SignedIn>
                 <Link
-                  className="btn-tertiary flex w-full items-center justify-center rounded-lg border p-2 text-sm dark:border-slate-800"
+                  className="btn-tertiary flex w-full items-center justify-center rounded-lg border p-2 text-sm  dark:border-slate-800"
                   href={"/"}
                 >
-                  <span className="text-white">Logout</span>
+                  <span className="text-dark-400">Logout</span>
                 </Link>
               </SignedIn>
             </div>
