@@ -1,6 +1,7 @@
 import React from "react";
 import rightArrowIcon from "../../../public/assets/icons/arrow-right.svg";
 import Image from "next/image";
+import TagHolder from "../TagHolder";
 
 const RightSidebar = () => {
   const demoQuestions = [
@@ -57,9 +58,7 @@ const RightSidebar = () => {
                 key={tag._id}
                 className="flex w-full items-center justify-between"
               >
-                <div className="background-light800_dark300 subtle-medium w-fit rounded-lg px-4 py-2 uppercase text-light-400 shadow-md dark:text-light-500">
-                  {tag.name}
-                </div>
+                <TagHolder tagName={tag.name} />
                 <div className="text-dark500_light700 small-medium">
                   {tag.num}
                 </div>

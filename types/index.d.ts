@@ -6,6 +6,11 @@ export interface SidebarLink {
   label: string;
 }
 
+export interface Metric {
+  metricTitle: string;
+  metricQuantity: number;
+}
+
 export interface Job {
   id?: string;
   employer_name?: string;
