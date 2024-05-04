@@ -1,5 +1,6 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Editor } from "@tinymce/tinymce-react";
@@ -18,10 +19,13 @@ import { Input } from "@/components/ui/input";
 import { QuestionSchema } from "@/lib/validations";
 import { useTheme } from "@/context/ThemeProvider";
 
+const type: any = "create";
+
 const Question = () => {
   const { mode } = useTheme();
 
   const editorRef = useRef(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof QuestionSchema>>({
@@ -35,22 +39,42 @@ const Question = () => {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof QuestionSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+    setIsSubmitting(true);
+    try {
+      // make an api call and post the qquestion to the backend
+      // contain all data
+      // navigate to the home page
+    } catch (error) {
+      // handle error
+    } finally {
+      setIsSubmitting(false);
+    }
     console.log(values);
   }
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>, field) {
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>, field: any) {
     if (e.key === "Enter" && field.name === "tags") {
       // prevent default submission
       e.preventDefault();
       const tagInput = e.target as HTMLInputElement;
       const tagValue = tagInput.value.trim();
 
-      if (tagValue.length > 15) {
-        return form.setError("tags", {
-          message: "Tag length should be less than 15 characters",
-        });
+      if (tagValue !== "") {
+        // Check tag length
+        if (tagValue.length > 15) {
+          return form.setError("tags", {
+            message: "Tag length should be less than 15 characters",
+          });
+        }
+
+        // check tag duplication
+        if (!field.value.includes(tagValue)) {
+          form.setValue("tags", [...field.value, tagValue]);
+          tagInput.value = "";
+          form.clearErrors("tags");
+        }
+      } else {
+        form.trigger();
       }
     }
   }
@@ -156,11 +180,45 @@ const Question = () => {
                   Tags <span className="text-primary-500">*</span>
                 </FormLabel>
                 <FormControl className="mt-3.5">
-                  <Input
-                    className="no-focus paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px]"
-                    placeholder="e.g. reactjs, nodejs, javascript"
-                    onKeyDown={(e) => handleKeyDown(e, field)}
-                  />
+                  <>
+                    <Input
+                      className="no-focus paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px]"
+                      placeholder="e.g. reactjs, nodejs, javascript"
+                      onKeyDown={(e) => handleKeyDown(e, field)}
+                    />
+                    {/* show tags if tags have been added */}
+
+                    {field.value.length > 0 && (
+                      <div className="flex-start mt-2.5 gap-2.5">
+                        {field.value.map((tag) => {
+                          return (
+                            <>
+                              <div
+                                key={tag}
+                                className="background-light800_dark400 subtle-medium text-dark500_light700 flex items-center gap-2 rounded-md px-4 py-2 text-[10px] uppercase"
+                                onClick={() => {
+                                  // remover tag on click
+                                  form.setValue(
+                                    "tags",
+                                    field.value.filter((t) => t !== tag)
+                                  );
+                                }}
+                              >
+                                {tag}
+                                <Image
+                                  src="/assets/icons/close.svg"
+                                  alt="close icon"
+                                  width={12}
+                                  height={12}
+                                  className="dark:invert-colors cursor-pointer object-contain"
+                                />
+                              </div>
+                            </>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </>
                 </FormControl>
                 <FormDescription className="body-regular mt-2.5 text-[14px] text-light-400 dark:text-light-500">
                   Add up to 5 tags to describe what your question is about.
@@ -171,8 +229,15 @@ const Question = () => {
             )}
           />
 
-          <Button className="primary-gradient min-h-[46px] w-fit self-end px-4 py-3 text-light-900 ">
-            Ask a Question
+          <Button
+            className="primary-gradient min-h-[46px] w-fit self-end px-4 py-3 text-light-900"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>{type === "edit" ? "Editing..." : "Posting..."}</>
+            ) : (
+              <>{type === "edit" ? "Edit Question" : "Post Question"}</>
+            )}
           </Button>
         </form>
       </Form>
