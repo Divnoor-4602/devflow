@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { QuestionSchema } from "@/lib/validations";
 import { useTheme } from "@/context/ThemeProvider";
+import { createQuestion } from "@/lib/actions/question.action";
 
 const type: any = "create";
 
@@ -38,10 +39,11 @@ const Question = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof QuestionSchema>) {
+  async function onSubmit(values: z.infer<typeof QuestionSchema>) {
     setIsSubmitting(true);
     try {
       // make an api call and post the qquestion to the backend
+      await createQuestion({});
       // contain all data
       // navigate to the home page
     } catch (error) {
@@ -128,6 +130,8 @@ const Question = () => {
                       editor // @ts-ignore
                     ) => (editorRef.current = editor)}
                     initialValue=""
+                    onBlur={field.onBlur}
+                    onEditorChange={(content) => field.onChange(content)}
                     init={{
                       content_css: `${mode === "light" ? "light" : "dark"}`,
 
