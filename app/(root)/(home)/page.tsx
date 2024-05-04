@@ -4,8 +4,6 @@ import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import LocalSelectFilter from "@/components/shared/filter/LocalSelectFilter";
 import HomeFilterBadges from "@/components/shared/filter/HomeFilterBadges";
 import NoResult from "@/components/shared/NoResult";
-import Image from "next/image";
-import pfp from "../../../public/assets/images/pfpExample.jpeg";
 
 import QuestionCards from "@/components/cards/QuestionCards";
 
