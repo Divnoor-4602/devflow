@@ -19,11 +19,19 @@ import { Input } from "@/components/ui/input";
 import { QuestionSchema } from "@/lib/validations";
 import { useTheme } from "@/context/ThemeProvider";
 import { createQuestion } from "@/lib/actions/question.action";
+import { usePathname, useRouter } from "next/navigation";
 
 const type: any = "create";
 
-const Question = () => {
+interface Props {
+  mongoUserId: string;
+}
+
+const Question = ({ mongoUserId }: Props) => {
   const { mode } = useTheme();
+
+  const router = useRouter();
+  const pathname = usePathname();
 
   const editorRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,9 +51,15 @@ const Question = () => {
     setIsSubmitting(true);
     try {
       // make an api call and post the qquestion to the backend
-      await createQuestion({});
+      await createQuestion({
+        title: values.title,
+        content: values.explanation,
+        tags: values.tags,
+        author: JSON.parse(mongoUserId),
+      });
       // contain all data
       // navigate to the home page
+      router.push("/");
     } catch (error) {
       // handle error
     } finally {
@@ -133,8 +147,6 @@ const Question = () => {
                     onBlur={field.onBlur}
                     onEditorChange={(content) => field.onChange(content)}
                     init={{
-                      content_css: `${mode === "light" ? "light" : "dark"}`,
-
                       height: 350,
                       menubar: false,
                       plugins: [

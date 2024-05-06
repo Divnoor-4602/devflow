@@ -6,73 +6,13 @@ import HomeFilterBadges from "@/components/shared/filter/HomeFilterBadges";
 import NoResult from "@/components/shared/NoResult";
 
 import QuestionCards from "@/components/cards/QuestionCards";
+import { getQuestions } from "@/lib/actions/question.action";
 
-const questions = [
-  {
-    _id: 1,
-    question:
-      "The Lightning Component c:LWC_PizzaTracker generated invalid output for field status. Error How to solve this",
-    tags: ["javascript", "react", "next"],
-    author: "John Doe",
-    metrics: [
-      { metricTitle: "Votes", metricQuantity: 10 },
-      { metricTitle: "Answers", metricQuantity: 3 },
-      { metricTitle: "Views", metricQuantity: 100 },
-    ],
-    upvotes: 5,
-    views: 50,
-    answers: 2,
-    createdAt: "2023-09-02T00:00:00.000Z",
-  },
-  {
-    _id: 3,
-    question:
-      "What is the difference between var, let, and const in JavaScript?",
-    tags: ["javascript"],
-    author: "Bob Johnson",
-    metrics: [
-      { metricTitle: "Votes", metricQuantity: 10 },
-      { metricTitle: "Answers", metricQuantity: 3 },
-      { metricTitle: "Views", metricQuantity: 100 },
-    ],
-    upvotes: 8,
-    views: 80,
-    answers: 4,
-    createdAt: "2024-01-03T00:00:00.000Z",
-  },
-  {
-    _id: 4,
-    question: "How to handle form submission in React?",
-    tags: ["react", "forms"],
-    author: "Alice Brown",
-    upvotes: 3,
-    metrics: [
-      { metricTitle: "Votes", metricQuantity: 10 },
-      { metricTitle: "Answers", metricQuantity: 3 },
-      { metricTitle: "Views", metricQuantity: 100 },
-    ],
-    views: 30,
-    answers: 1,
-    createdAt: "2021-09-04T00:00:00.000Z",
-  },
-  {
-    _id: 5,
-    question: "What are the best practices for writing clean code?",
-    tags: ["programming", "best practices"],
-    author: "David Wilson",
-    metrics: [
-      { metricTitle: "Votes", metricQuantity: 10 },
-      { metricTitle: "Answers", metricQuantity: 3 },
-      { metricTitle: "Views", metricQuantity: 100 },
-    ],
-    upvotes: 12,
-    views: 120,
-    answers: 6,
-    createdAt: "2021-09-05T00:00:00.000Z",
-  },
-];
+export default async function Home() {
+  const result = await getQuestions();
 
-export default function Home() {
+  console.log(result);
+
   return (
     <>
       <div className="flex flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -108,12 +48,8 @@ export default function Home() {
 
       {/* Question cards */}
       <div className="mt-10 flex flex-col gap-6">
-        {questions.length === 0 ? (
-          <>
-            <NoResult />
-          </>
-        ) : (
-          questions.map((question) => {
+        {result.length > 0 ? (
+          result.map((question) => {
             // calculating time asked since the question was asked
             const timeRightNow = new Date().getTime();
             const timeAsked = new Date(question.createdAt).getTime();
@@ -122,15 +58,24 @@ export default function Home() {
             return (
               <>
                 <QuestionCards
-                  question={question.question}
+                  _id={question._id}
+                  title={question.title}
                   author={question.author}
+                  content={question.content}
                   timePassed={timePassed}
-                  metrics={question.metrics}
                   tags={question.tags}
+                  upvotes={question.upvotes.length}
+                  views={question.views.length}
+                  answers={question.answers.length}
+                  createdAt={question.createdAt}
                 />
               </>
             );
           })
+        ) : (
+          <>
+            <NoResult />
+          </>
         )}
       </div>
     </>

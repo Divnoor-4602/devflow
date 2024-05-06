@@ -3,22 +3,38 @@ import pfp from "../../public/assets/images/pfpExample.jpeg";
 import Image from "next/image";
 import TagHolder from "../shared/TagHolder";
 import Metrics from "../shared/Metrics";
-import { Metric } from "@/types";
 
 interface QuestionCardsProps {
-  question: string;
-  author: string;
+  _id: string;
+  title: string;
+  author: {
+    _id: string;
+    name: string;
+    picture: string;
+  };
+  content: string;
   timePassed: number;
-  metrics: Metric[];
-  tags: string[];
+  tags: {
+    _id: string;
+    name: string;
+  }[];
+  upvotes: number;
+  views: number;
+  answers: Array<object>;
+  createdAt: Date;
 }
 
 const QuestionCards = ({
-  question,
+  _id,
+  title,
   author,
+  content,
   timePassed,
-  metrics,
   tags,
+  upvotes,
+  views,
+  answers,
+  createdAt,
 }: QuestionCardsProps) => {
   return (
     <>
@@ -28,14 +44,14 @@ const QuestionCards = ({
         <div className="flex flex-col gap-[14px]">
           {/* h3 question text */}
           <div className="base-semibold sm:h3-semibold text-dark200_light900 line-clamp-1">
-            {question}
+            {title}
           </div>
           {/* tags */}
           <div className="flex w-full gap-2">
             {tags.map((tag) => {
               return (
-                <React.Fragment key={tag}>
-                  <TagHolder tagName={tag} />
+                <React.Fragment key={tag._id}>
+                  <TagHolder tagName={tag.name} />
                 </React.Fragment>
               );
             })}
@@ -54,7 +70,9 @@ const QuestionCards = ({
               className="rounded-full object-contain object-center"
             />
             {/* author */}
-            <div className="text-dark400_light700 body-medium">{author}</div>
+            <div className="text-dark400_light700 body-medium">
+              {author.name}
+            </div>
             <div className="text-dark400_light700 small-regular hidden md:block">
               •
             </div>
@@ -65,19 +83,9 @@ const QuestionCards = ({
           </div>
           {/* Statistics */}
           <div className="flex flex-wrap gap-[9px]">
-            {metrics &&
-              metrics.map((metric) => {
-                return (
-                  <>
-                    <div>
-                      <Metrics
-                        metricTitle={metric.metricTitle}
-                        metricQuantity={metric.metricQuantity}
-                      />
-                    </div>
-                  </>
-                );
-              })}
+            <Metrics metricTitle="Votes" metricQuantity={upvotes} />
+            <Metrics metricTitle="Answers" metricQuantity={answers.length} />
+            <Metrics metricTitle="Views" metricQuantity={views} />
           </div>
         </div>
       </div>
