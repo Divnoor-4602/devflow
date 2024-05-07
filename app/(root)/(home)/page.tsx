@@ -11,8 +11,6 @@ import { getQuestions } from "@/lib/actions/question.action";
 export default async function Home() {
   const result = await getQuestions();
 
-  console.log(result);
-
   return (
     <>
       <div className="flex flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -51,9 +49,6 @@ export default async function Home() {
         {result.length > 0 ? (
           result.map((question) => {
             // calculating time asked since the question was asked
-            const timeRightNow = new Date().getTime();
-            const timeAsked = new Date(question.createdAt).getTime();
-            const timePassed = timeRightNow - timeAsked;
 
             return (
               <>
@@ -62,7 +57,6 @@ export default async function Home() {
                   title={question.title}
                   author={question.author}
                   content={question.content}
-                  timePassed={timePassed}
                   tags={question.tags}
                   upvotes={question.upvotes.length}
                   views={question.views.length}

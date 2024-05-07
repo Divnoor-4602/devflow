@@ -5,6 +5,7 @@ import Question from "@/database/question.model";
 import Tag from "@/database/tag.model";
 import User from "@/database/user.model";
 import { CreateQuestionParams, GetQuestionsParams } from "./shared.types";
+import { revalidatePath } from "next/cache";
 
 export async function getQuestions(params: GetQuestionsParams) {
   try {
@@ -20,8 +21,8 @@ export async function getQuestions(params: GetQuestionsParams) {
       .populate({
         path: "author",
         model: User,
-      });
-
+      })
+      .sort({ createdAt: -1 });
     return questions;
   } catch (error) {
     console.log(error);
@@ -66,5 +67,7 @@ export async function createQuestion(params: CreateQuestionParams) {
     });
 
     // interaction on the question, increment author's reputation +5
+
+    revalidatePath(path);
   } catch (error) {}
 }

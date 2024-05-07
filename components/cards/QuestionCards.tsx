@@ -3,6 +3,7 @@ import pfp from "../../public/assets/images/pfpExample.jpeg";
 import Image from "next/image";
 import TagHolder from "../shared/TagHolder";
 import Metrics from "../shared/Metrics";
+import { getTimeStamp } from "@/lib/utils";
 
 interface QuestionCardsProps {
   _id: string;
@@ -13,7 +14,6 @@ interface QuestionCardsProps {
     picture: string;
   };
   content: string;
-  timePassed: number;
   tags: {
     _id: string;
     name: string;
@@ -29,7 +29,6 @@ const QuestionCards = ({
   title,
   author,
   content,
-  timePassed,
   tags,
   upvotes,
   views,
@@ -78,7 +77,7 @@ const QuestionCards = ({
             </div>
             {/* time created */}
             <div className="small-regular text-dark400_light700 hidden md:block">
-              asked {Math.floor(timePassed / (24 * 60 * 60 * 1000))} days ago
+              {getTimeStamp(createdAt)}
             </div>
           </div>
           {/* Statistics */}
