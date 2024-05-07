@@ -17,3 +17,7 @@ export async function getUserById(params: any) {
     throw error;
   }
 }
+
+export async function createUser(params: any) {
+  databaseConnect();
+}
