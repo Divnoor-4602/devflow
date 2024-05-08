@@ -2,6 +2,8 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
+import { createUser, updateUser, deleteUser } from "@/lib/actions/user.action";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
@@ -51,12 +53,50 @@ export async function POST(req: Request) {
 
   // Do something with the payload
   // For this guide, you simply log the payload to the console
-  const { id } = evt.data;
   const eventType = evt.type;
 
+  // if the user is created in clerk database, create in mongo database
   if (eventType === "user.created") {
-    const { id } = evt.data;
+    const { id, email_addresses, first_name, last_name, username, image_url } =
+      evt.data;
+    // create a mongo user
+    const mongoUser = await createUser({
+      clerkId: id,
+      name: `${first_name} ${last_name ? ` ${last_name}` : ""}`,
+      email: email_addresses[0].email_address,
+      username: username!,
+      picture: image_url,
+    });
+
+    return NextResponse.json({ message: "OK", user: mongoUser });
+  } else if (eventType === "user.updated") {
+    const { id, email_addresses, first_name, last_name, image_url, username } =
+      evt.data;
+
+    // update the mongo user
+    const mongoUserUpdated = await updateUser({
+      clerkId: id,
+      updateData: {
+        name: `${first_name} ${last_name ? ` ${last_name}` : ""}`,
+        email: email_addresses[0].email_address,
+        username,
+        picture: image_url,
+      },
+      path: `/profile/${id}`,
+    });
+
+    return NextResponse.json({ message: "OK", user: mongoUserUpdated });
   }
 
-  return new Response("", { status: 200 });
+  // if the user is deleted, delete in mongo database
+  if (eventType === "user.deleted") {
+    const { id } = evt.data;
+
+    // delete the mongo user
+    const mongoUserDeleted = await deleteUser({
+      clerkId: id!,
+    });
+  }
+
+  return new Response("", { status: 201 });
 }
