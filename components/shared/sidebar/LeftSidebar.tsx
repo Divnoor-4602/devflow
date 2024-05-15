@@ -14,6 +14,7 @@ import { SignedIn, SignedOut } from "@clerk/nextjs";
 
 const LeftSidebar = () => {
   const pathname = usePathname();
+  console.log(pathname);
 
   return (
     <>
@@ -22,9 +23,7 @@ const LeftSidebar = () => {
         <div className="flex flex-col gap-4 lg:w-full">
           {/* Sidebar links */}
           {sidebarLinks.map((link, index) => {
-            const isActive =
-              (pathname.includes(link.route) && pathname.length > 1) ||
-              pathname === link.route;
+            const isActive = pathname === link.route;
 
             return (
               <>
