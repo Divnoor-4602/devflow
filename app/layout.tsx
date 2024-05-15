@@ -1,10 +1,11 @@
 import React from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Inter, Space_Grotesk } from "next/font/google";
-import { neobrutalism } from "@clerk/themes";
+import { dark } from "@clerk/themes";
 import "./global.css";
 
 import type { Metadata } from "next";
+import { ThemeProvider } from "@/context/ThemeProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -15,7 +16,7 @@ const inter = Inter({
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-space-grotesk",
+  variable: "--font-spaceGrotesk",
 });
 
 export const metadata: Metadata = {
@@ -29,19 +30,19 @@ export const metadata: Metadata = {
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ClerkProvider
-      appearance={{
-        baseTheme: neobrutalism,
-      }}
-    >
-      <html>
+    <html>
+      <ThemeProvider>
         <body className={`${inter.variable} ${spaceGrotesk.variable} `}>
-          <main className="flex min-h-screen items-center justify-center">
+          <ClerkProvider
+            appearance={{
+              baseTheme: dark,
+            }}
+          >
             {children}
-          </main>
+          </ClerkProvider>
         </body>
-      </html>
-    </ClerkProvider>
+      </ThemeProvider>
+    </html>
   );
 };
 
