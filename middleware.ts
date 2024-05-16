@@ -11,7 +11,7 @@ const isPublicRoute = createRouteMatcher([
   "/tags/:id",
   "/community",
   "/jobs",
-  "/api/webhooks",
+  "/api/webhook",
   "/api/chatgpt",
 ]);
 
