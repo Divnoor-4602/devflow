@@ -10,6 +10,18 @@ import {
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 
+export async function getAllUsers(params: any) {
+  try {
+    await databaseConnect();
+
+    const users = await User.find({});
+    return users;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 export async function getUserById(params: any) {
   try {
     await databaseConnect();

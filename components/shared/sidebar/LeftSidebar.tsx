@@ -14,7 +14,6 @@ import { SignedIn, SignedOut } from "@clerk/nextjs";
 
 const LeftSidebar = () => {
   const pathname = usePathname();
-  console.log(pathname);
 
   return (
     <>
