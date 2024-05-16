@@ -62,7 +62,7 @@ const QuestionCards = ({
           <div className="flex items-center gap-2">
             {/* profile image */}
             <Image
-              src={pfp}
+              src={author.picture}
               alt="totoro image"
               width={20}
               height={20}
