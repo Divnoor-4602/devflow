@@ -30,10 +30,11 @@ const page = async () => {
             return (
               <>
                 <UserCard
+                  key={user._id}
                   name={user.name}
                   picture={user.picture}
                   _id={user._id}
-                  username={"Divnoor"}
+                  username={user.username}
                 />
               </>
             );

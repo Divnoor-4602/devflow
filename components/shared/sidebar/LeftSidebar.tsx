@@ -31,7 +31,7 @@ const LeftSidebar = () => {
                     isActive && "primary-gradient"
                   } flex cursor-pointer items-center justify-start gap-4 rounded-xl p-3`}
                   href={link.route}
-                  key={link.label}
+                  key={index}
                 >
                   <Image
                     src={link.imgURL}

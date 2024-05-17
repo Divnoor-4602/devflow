@@ -6,15 +6,16 @@ import {
   CreateUserParams,
   UpdateUserParams,
   DeleteUserParams,
+  GetAllUsersParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 
-export async function getAllUsers(params: any) {
+export async function getAllUsers(params: GetAllUsersParams) {
   try {
     await databaseConnect();
 
-    const users = await User.find({});
+    const users = await User.find({}).sort({ createdAt: -1 });
     return users;
   } catch (error) {
     console.log(error);
