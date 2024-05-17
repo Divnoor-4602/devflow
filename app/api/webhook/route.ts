@@ -72,6 +72,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: "OK", user: mongoUser });
   } else if (eventType === "user.updated") {
+    console.log("updating user");
     const { id, email_addresses, first_name, last_name, image_url, username } =
       evt.data;
 
@@ -81,7 +82,7 @@ export async function POST(req: Request) {
       updateData: {
         name: `${first_name} ${last_name ? ` ${last_name}` : ""}`,
         email: email_addresses[0].email_address,
-        username,
+        username: username!,
         picture: image_url,
       },
       path: `/profile/${id}`,

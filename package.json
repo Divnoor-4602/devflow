@@ -21,6 +21,7 @@
     "@tinymce/tinymce-react": "^5.0.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "date-fns": "^3.6.0",
     "lucide-react": "^0.372.0",
     "mongodb": "^6.6.0",
     "mongoose": "^8.3.3",

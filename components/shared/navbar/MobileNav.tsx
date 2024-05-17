@@ -21,9 +21,7 @@ const NavContent = () => {
     <>
       <div className="flex flex-col gap-6">
         {sidebarLinks.map((link, index) => {
-          const isActive =
-            (pathname.includes(link.route) && pathname.length > 1) ||
-            pathname === link.route;
+          const isActive = pathname === link.route;
 
           return (
             <>
