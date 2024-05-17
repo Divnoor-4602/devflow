@@ -3,6 +3,8 @@ import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import LocalSelectFilter from "@/components/shared/filter/LocalSelectFilter";
 import { getAllTags } from "@/lib/actions/tag.actions";
 import TagCard from "@/components/cards/TagCard";
+import NoResult from "@/components/shared/NoResult";
+import Link from "next/link";
 
 const page = async () => {
   const tags = await getAllTags({});
@@ -31,18 +33,22 @@ const page = async () => {
               {tags.map((tag) => {
                 return (
                   <>
-                    <TagCard
-                      key={tag._id}
-                      name={tag.name}
-                      questions={tag.questions}
-                      _id={tag._id}
-                    />
+                    <Link href={`/tags/${tag._id}`}>
+                      <TagCard
+                        key={tag._id}
+                        name={tag.name}
+                        questions={tag.questions}
+                        _id={tag._id}
+                      />
+                    </Link>
                   </>
                 );
               })}
             </>
           ) : (
-            <></>
+            <>
+              <NoResult />
+            </>
           )}
         </div>
       </div>
