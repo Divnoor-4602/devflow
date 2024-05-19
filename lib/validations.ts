@@ -7,3 +7,7 @@ export const QuestionSchema = z.object({
   // The array should have at least 1 element and at most 3 elements.
   tags: z.array(z.string().min(1).max(45)).min(1).max(3),
 });
+
+export const AnswerSchema = z.object({
+  answer: z.string().min(100),
+});

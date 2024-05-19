@@ -6,6 +6,8 @@ import downvoteIcon from "../../../../public/assets/icons/downvote.svg";
 import starRed from "../../../../public/assets/icons/star-red.svg";
 import Metrics from "@/components/shared/Metrics";
 import ParseHTML from "@/components/shared/ParseHTML";
+import TagHolder from "@/components/shared/TagHolder";
+import Answer from "@/components/forms/Answer";
 
 const page = async ({
   params,
@@ -14,15 +16,12 @@ const page = async ({
   params: { questionId: string };
 }) => {
   const question = await getQuestionById({ questionId: params.questionId });
-  console.log(question);
-
-  // id, title, content, tags, views, upvotes, downvotes, author, createdAt, updatedAt, answers
 
   return (
     <>
       <div className="mt-9">
         {/* question header */}
-        <div className="flex flex-col gap-[18px]">
+        <div className="mb-8 flex flex-col gap-[18px]">
           {/* author name and picture */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1">
@@ -71,7 +70,7 @@ const page = async ({
             {question.title}
           </div>
           {/* metrics */}
-          <div className="mb-8 flex flex-wrap items-center gap-[15px]">
+          <div className="flex flex-wrap items-center gap-[15px]">
             <Metrics
               metricTitle="Votes"
               metricQuantity={question.upvotes.length}
@@ -84,6 +83,21 @@ const page = async ({
           </div>
         </div>
         <ParseHTML data={question.content} />
+        <div className="mt-8 flex gap-4">
+          {/* tags */}
+          {question.tags.length > 0 &&
+            question.tags.map((tag) => {
+              return (
+                <>
+                  <TagHolder tagName={tag.name} key={tag.name} />
+                </>
+              );
+            })}
+        </div>
+        {/* answer form */}
+        <div>
+          <Answer />
+        </div>
       </div>
     </>
   );
