@@ -52,17 +52,19 @@ export default async function Home() {
 
             return (
               <>
-                <QuestionCards
-                  _id={question._id}
-                  title={question.title}
-                  author={question.author}
-                  content={question.content}
-                  tags={question.tags}
-                  upvotes={question.upvotes.length}
-                  views={question.views.length}
-                  answers={question.answers.length}
-                  createdAt={question.createdAt}
-                />
+                <Link href={`/question/${question._id}`}>
+                  <QuestionCards
+                    _id={question._id}
+                    title={question.title}
+                    author={question.author}
+                    content={question.content}
+                    tags={question.tags}
+                    upvotes={question.upvotes.length}
+                    views={question.views.length}
+                    answers={question.answers.length}
+                    createdAt={question.createdAt}
+                  />
+                </Link>
               </>
             );
           })
