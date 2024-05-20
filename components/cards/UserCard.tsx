@@ -39,7 +39,7 @@ const UserCard = async ({ _id, name, picture, username }: ProfileCardProps) => {
           height={100}
           className="rounded-full"
         />
-        <div className="h3-bold text-dark200_light900">{name}</div>
+        <div className="h3-bold text-dark200_light900 line-clamp-1">{name}</div>
         {username ? (
           <div className="body-regular text-dark-400 dark:text-light-500">
             @{username}

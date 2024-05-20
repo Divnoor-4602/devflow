@@ -8,14 +8,21 @@ import Metrics from "@/components/shared/Metrics";
 import ParseHTML from "@/components/shared/ParseHTML";
 import TagHolder from "@/components/shared/TagHolder";
 import Answer from "@/components/forms/Answer";
+import { auth } from "@clerk/nextjs/server";
+import { getUserById } from "@/lib/actions/user.action";
+import Votes from "@/components/shared/Votes";
+import AllAnswers from "@/components/shared/AllAnswers";
 
-const page = async ({
-  params,
-  searchParams,
-}: {
-  params: { questionId: string };
-}) => {
+const page = async ({ params }: { params: { questionId: string } }) => {
   const question = await getQuestionById({ questionId: params.questionId });
+
+  const { userId: clerkId } = auth();
+
+  let mongoUser;
+
+  if (clerkId) {
+    mongoUser = await getUserById({ userId: clerkId });
+  }
 
   return (
     <>
@@ -23,7 +30,7 @@ const page = async ({
         {/* question header */}
         <div className="mb-8 flex flex-col gap-[18px]">
           {/* author name and picture */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
             <div className="flex items-center gap-1">
               <Image
                 src={question.author.picture}
@@ -33,11 +40,11 @@ const page = async ({
                 className="rounded-full"
               />
               <div className="paragraph-semibold text-dark300_light700">
-                {question.author.name} | @{question.author.username}
+                {question.author.name}
               </div>
             </div>
             {/* upvotes downvotes and save */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center justify-end gap-4">
               <div className="flex items-center gap-2">
                 <Image
                   src={upvoteIcon}
@@ -94,9 +101,21 @@ const page = async ({
               );
             })}
         </div>
+
+        {/* all answers */}
+        <AllAnswers
+          questionId={question._id}
+          userId={JSON.stringify(mongoUser._id)}
+          totalAnswers={question.answers.length}
+        />
+
         {/* answer form */}
         <div>
-          <Answer />
+          <Answer
+            question={question.content}
+            questionId={JSON.stringify(question._id)}
+            authorId={JSON.stringify(mongoUser._id)}
+          />
         </div>
       </div>
     </>

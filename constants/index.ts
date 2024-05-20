@@ -71,3 +71,30 @@ export const BADGE_CRITERIA = {
     GOLD: 100000,
   },
 };
+
+export const HomePageFilters = [
+  { name: "Newest", value: "Newest" },
+  { name: "Recommended", value: "Recommended" },
+  { name: "Frequent", value: "Frequent" },
+  { name: "Unanswered", value: "Unanswered" },
+];
+
+export const CommunityPageFilters = [
+  { name: "New Users", value: "New Users" },
+  { name: "Old Users", value: "Old Users" },
+  { name: "Top Contributors", value: "Top Contributors" },
+];
+
+export const TagPageFilters = [
+  { name: "Popular", value: "Popular" },
+  { name: "Recent", value: "Recent" },
+  { name: "Old", value: "Old" },
+  { name: "Name", value: "Name" },
+];
+
+export const answerFilters = [
+  { name: "Highest Upvotes", value: "Highest Upvotes" },
+  { name: "Lowest Upvotes", value: "Lowest Upvotes" },
+  { name: "Most Recent", value: "Most Recent" },
+  { name: "Oldest", value: "Oldest" },
+];

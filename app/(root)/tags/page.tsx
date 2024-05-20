@@ -5,6 +5,7 @@ import { getAllTags } from "@/lib/actions/tag.actions";
 import TagCard from "@/components/cards/TagCard";
 import NoResult from "@/components/shared/NoResult";
 import Link from "next/link";
+import { CommunityPageFilters, TagPageFilters } from "@/constants";
 
 const page = async () => {
   const tags = await getAllTags({});
@@ -23,8 +24,9 @@ const page = async () => {
           />
 
           <LocalSelectFilter
-            route="/community"
-            filterList={["Popular", "Recent", "Old", "Name"]}
+            filterList={CommunityPageFilters}
+            otherClasses="min-h-[56px] sm:min-w-[170px]"
+            containerClasses="hidden max-md:flex"
           />
         </div>
         <div className="mt-8 flex flex-wrap gap-4">
