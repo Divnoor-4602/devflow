@@ -3,6 +3,7 @@ import Image from "next/image";
 import likeIcon from "../../public/assets/icons/like.svg";
 import answerIcon from "../../public/assets/icons/message.svg";
 import viewIcon from "../../public/assets/icons/eye.svg";
+import { formatAndDivideNumber } from "@/lib/utils";
 
 interface MetricsProps {
   metricTitle: string;

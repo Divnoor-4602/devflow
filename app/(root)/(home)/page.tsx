@@ -8,6 +8,8 @@ import NoResult from "@/components/shared/NoResult";
 import QuestionCards from "@/components/cards/QuestionCards";
 import { getQuestions } from "@/lib/actions/question.action";
 
+import { HomePageFilters } from "@/constants";
+
 export default async function Home() {
   const result = await getQuestions({});
 
@@ -36,8 +38,9 @@ export default async function Home() {
         />
 
         <LocalSelectFilter
-          route="/"
-          filterList={["Newest", "Reccomended", "Frequent", "Unanswered"]}
+          filterList={HomePageFilters}
+          otherClasses="min-h-[56px] sm:min-w-[170px]"
+          containerClasses="hidden max-md:flex"
         />
       </div>
       <HomeFilterBadges
@@ -60,7 +63,7 @@ export default async function Home() {
                     content={question.content}
                     tags={question.tags}
                     upvotes={question.upvotes.length}
-                    views={question.views.length}
+                    views={question.views}
                     answers={question.answers.length}
                     createdAt={question.createdAt}
                   />

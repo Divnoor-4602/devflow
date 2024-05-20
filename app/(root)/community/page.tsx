@@ -4,6 +4,8 @@ import LocalSelectFilter from "@/components/shared/filter/LocalSelectFilter";
 import UserCard from "@/components/cards/UserCard";
 import { getAllUsers } from "@/lib/actions/user.action";
 
+import { CommunityPageFilters } from "@/constants";
+
 const page = async () => {
   const users = await getAllUsers({});
 
@@ -21,8 +23,9 @@ const page = async () => {
           />
 
           <LocalSelectFilter
-            route="/community"
-            filterList={["New Users", "Old Users", "Top Contributors"]}
+            filterList={CommunityPageFilters}
+            otherClasses="min-h-[56px] sm:min-w-[170px]"
+            containerClasses="hidden max-md:flex"
           />
         </div>
         <div className="mt-8 flex flex-wrap gap-4">

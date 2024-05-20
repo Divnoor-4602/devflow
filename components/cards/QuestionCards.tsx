@@ -20,7 +20,7 @@ interface QuestionCardsProps {
   }[];
   upvotes: number;
   views: number;
-  answers: Array<object>;
+  answers: number;
   createdAt: Date;
 }
 
@@ -83,7 +83,7 @@ const QuestionCards = ({
           {/* Statistics */}
           <div className="flex flex-wrap gap-[9px]">
             <Metrics metricTitle="Votes" metricQuantity={upvotes} />
-            <Metrics metricTitle="Answers" metricQuantity={answers.length} />
+            <Metrics metricTitle="Answers" metricQuantity={answers} />
             <Metrics metricTitle="Views" metricQuantity={views} />
           </div>
         </div>

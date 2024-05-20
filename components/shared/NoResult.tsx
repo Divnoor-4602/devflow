@@ -6,6 +6,7 @@ import Image from "next/image";
 import noResultDark from "../../public/assets/images/dark-illustration.png";
 import noResultLight from "../../public/assets/images/light-illustration.png";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 const NoResult = () => {
   const { mode } = useTheme();
@@ -26,9 +27,12 @@ const NoResult = () => {
           discussion. our query could be the next big thing others learn from.
           Get involved! 💡
         </div>
-        <Button className="primary-gradient rounded-lg px-4 py-3 text-white shadow-sm">
+        <Link
+          className="primary-gradient rounded-lg px-4 py-3 text-white shadow-sm"
+          href={"/ask-question"}
+        >
           Ask a Question
-        </Button>
+        </Link>
       </div>
     </>
   );
