@@ -4,7 +4,25 @@ import downvoteIcon from "../../public/assets/icons/downvote.svg";
 import starRed from "../../public/assets/icons/star-red.svg";
 import Image from "next/image";
 
-const Votes = () => {
+interface Props {
+  item: string;
+  itemId: string;
+  userId: string;
+  numUpvotes: number;
+  numDownvotes: number;
+  upvoted: boolean;
+  downvoted: boolean;
+}
+
+const Votes = ({
+  item,
+  itemId,
+  userId,
+  numUpvotes,
+  numDownvotes,
+  upvoted,
+  downvoted,
+}: Props) => {
   return (
     <>
       <div className="flex items-center gap-4">
@@ -32,7 +50,9 @@ const Votes = () => {
             {0}
           </div>
         </div>
-        <Image src={starRed} alt="save icon" width={18} height={18} />
+        {item === "question" && (
+          <Image src={starRed} alt="save icon" width={18} height={18} />
+        )}
       </div>
     </>
   );
