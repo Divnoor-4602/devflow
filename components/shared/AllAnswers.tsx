@@ -3,11 +3,13 @@ import LocalSelectFilter from "./filter/LocalSelectFilter";
 import { answerFilters } from "@/constants";
 import { getAnswers } from "@/lib/actions/answers.action";
 import Link from "next/link";
+
 import Image from "next/image";
 import { getTimeStamp } from "@/lib/utils";
 
 import ParseHTML from "./ParseHTML";
 import Votes from "./Votes";
+import { getUserById } from "@/lib/actions/user.action";
 
 interface Props {
   questionId: string;
@@ -25,6 +27,8 @@ const AllAnswers = async ({
   filter,
 }: Props) => {
   const result = await getAnswers({ questionId });
+
+  const mongoUser = await getUserById({ userId });
 
   return (
     <div className="mt-11">
@@ -63,7 +67,15 @@ const AllAnswers = async ({
                   </Link>
                   {/* upvotes / downvotes / fav */}
                   <div className="flex items-center justify-end">
-                    <Votes />
+                    <Votes
+                      item="answer"
+                      itemId={JSON.stringify(answer._id)}
+                      userId={JSON.stringify(userId)}
+                      numUpvotes={answer.upvotes.length}
+                      numDownvotes={answer.downvotes.length}
+                      upvoted={answer.upvotes.includes(userId)}
+                      downvoted={answer.downvotes.includes(userId)}
+                    />
                   </div>
                 </div>
                 <div className="mt-6">
