@@ -12,6 +12,7 @@ import { auth } from "@clerk/nextjs/server";
 import { getUserById } from "@/lib/actions/user.action";
 import Votes from "@/components/shared/Votes";
 import AllAnswers from "@/components/shared/AllAnswers";
+import { Tags } from "lucide-react";
 
 const page = async ({ params }: { params: { questionId: string } }) => {
   const question = await getQuestionById({ questionId: params.questionId });
@@ -44,33 +45,17 @@ const page = async ({ params }: { params: { questionId: string } }) => {
               </div>
             </div>
             {/* upvotes downvotes and save */}
-            <div className="flex items-center justify-end gap-4">
-              <div className="flex items-center gap-2">
-                <Image
-                  src={upvoteIcon}
-                  alt="upvote icon"
-                  width={18}
-                  height={18}
-                  className="cursor-pointer"
-                />
-                <div className="subtle-medium text-dark400_light900 background-light700_dark400 flex items-center justify-center rounded p-1">
-                  {question.upvotes.length}
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Image
-                  src={downvoteIcon}
-                  alt="downvote icon"
-                  width={18}
-                  height={18}
-                  className="cursor-pointer"
-                />
-                <div className="subtle-medium text-dark400_light900 background-light700_dark400 flex items-center justify-center rounded p-1">
-                  {question.downvotes.length}
-                </div>
-              </div>
-              <Image src={starRed} alt="save icon" width={18} height={18} />
-            </div>
+
+            <Votes
+              item="question"
+              itemId={JSON.stringify(question._id)}
+              userId={JSON.stringify(mongoUser._id)}
+              numUpvotes={question.upvotes.length}
+              numDownvotes={question.downvotes.length}
+              upvoted={question.upvotes.includes(mongoUser._id)}
+              downvoted={question.downvotes.includes(mongoUser._id)}
+              hasSaved={mongoUser?.saved.includes(question._id)}
+            />
           </div>
           {/* question title */}
           <div className="h2-semibold text-dark200_light900 leading-[31px]">
@@ -93,7 +78,7 @@ const page = async ({ params }: { params: { questionId: string } }) => {
         <div className="mt-8 flex gap-4">
           {/* tags */}
           {question.tags.length > 0 &&
-            question.tags.map((tag) => {
+            question.tags.map((tag: any) => {
               return (
                 <>
                   <TagHolder tagName={tag.name} key={tag.name} />
@@ -105,7 +90,7 @@ const page = async ({ params }: { params: { questionId: string } }) => {
         {/* all answers */}
         <AllAnswers
           questionId={question._id}
-          userId={JSON.stringify(mongoUser._id)}
+          userId={mongoUser._id}
           totalAnswers={question.answers.length}
         />
 
