@@ -5,10 +5,17 @@ import { useTheme } from "@/context/ThemeProvider";
 import Image from "next/image";
 import noResultDark from "../../public/assets/images/dark-illustration.png";
 import noResultLight from "../../public/assets/images/light-illustration.png";
-import { Button } from "../ui/button";
+
 import Link from "next/link";
 
-const NoResult = () => {
+interface NoResultProps {
+  text: string;
+  subtext: string;
+  buttonText: string;
+  buttonLink: string;
+}
+
+const NoResult = ({ text, subtext, buttonText, buttonLink }): NoResultProps => {
   const { mode } = useTheme();
   return (
     <>
@@ -19,19 +26,15 @@ const NoResult = () => {
           width={270}
           height={200}
         />
-        <div className="h2-bold text-dark200_light900 text-center">
-          There's nothing to show
-        </div>
+        <div className="h2-bold text-dark200_light900 text-center">{text}</div>
         <div className="body-regular text-dark500_light700 text-center">
-          Be the first to break the silence! 🚀 Ask a Question and kickstart the
-          discussion. our query could be the next big thing others learn from.
-          Get involved! 💡
+          {subtext}
         </div>
         <Link
           className="primary-gradient rounded-lg px-4 py-3 text-white shadow-sm"
-          href={"/ask-question"}
+          href={`/${buttonLink}`}
         >
-          Ask a Question
+          {buttonText || "Ask a Question"}
         </Link>
       </div>
     </>

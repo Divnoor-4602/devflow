@@ -5,7 +5,7 @@ import { getAllTags } from "@/lib/actions/tag.actions";
 import TagCard from "@/components/cards/TagCard";
 import NoResult from "@/components/shared/NoResult";
 import Link from "next/link";
-import { CommunityPageFilters, TagPageFilters } from "@/constants";
+import { TagPageFilters } from "@/constants";
 
 const page = async () => {
   const tags = await getAllTags({});
@@ -24,7 +24,7 @@ const page = async () => {
           />
 
           <LocalSelectFilter
-            filterList={CommunityPageFilters}
+            filterList={TagPageFilters}
             otherClasses="min-h-[56px] sm:min-w-[170px]"
             containerClasses="hidden max-md:flex"
           />
@@ -49,7 +49,12 @@ const page = async () => {
             </>
           ) : (
             <>
-              <NoResult />
+              <NoResult
+                text="There's no question to show"
+                subtext="Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 💡"
+                buttonText="Ask a Question"
+                buttonLink="ask-question"
+              />
             </>
           )}
         </div>

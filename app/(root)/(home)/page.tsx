@@ -73,7 +73,12 @@ export default async function Home() {
           })
         ) : (
           <>
-            <NoResult />
+            <NoResult
+              text="There's no question to show"
+              subtext="Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 💡"
+              buttonText="Ask a Question"
+              buttonLink="ask-question"
+            />
           </>
         )}
       </div>

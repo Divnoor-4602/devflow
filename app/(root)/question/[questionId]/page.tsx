@@ -1,9 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import { getQuestionById } from "@/lib/actions/question.action";
-import upvoteIcon from "../../../../public/assets/icons/upvote.svg";
-import downvoteIcon from "../../../../public/assets/icons/downvote.svg";
-import starRed from "../../../../public/assets/icons/star-red.svg";
 import Metrics from "@/components/shared/Metrics";
 import ParseHTML from "@/components/shared/ParseHTML";
 import TagHolder from "@/components/shared/TagHolder";
@@ -12,7 +9,6 @@ import { auth } from "@clerk/nextjs/server";
 import { getUserById } from "@/lib/actions/user.action";
 import Votes from "@/components/shared/Votes";
 import AllAnswers from "@/components/shared/AllAnswers";
-import { Tags } from "lucide-react";
 
 const page = async ({ params }: { params: { questionId: string } }) => {
   const question = await getQuestionById({ questionId: params.questionId });
@@ -45,17 +41,18 @@ const page = async ({ params }: { params: { questionId: string } }) => {
               </div>
             </div>
             {/* upvotes downvotes and save */}
-
-            <Votes
-              item="question"
-              itemId={JSON.stringify(question._id)}
-              userId={JSON.stringify(mongoUser._id)}
-              numUpvotes={question.upvotes.length}
-              numDownvotes={question.downvotes.length}
-              upvoted={question.upvotes.includes(mongoUser._id)}
-              downvoted={question.downvotes.includes(mongoUser._id)}
-              hasSaved={mongoUser?.saved.includes(question._id)}
-            />
+            <div className="flex justify-end">
+              <Votes
+                item="question"
+                itemId={JSON.stringify(question._id)}
+                userId={JSON.stringify(mongoUser._id)}
+                numUpvotes={question.upvotes.length}
+                numDownvotes={question.downvotes.length}
+                upvoted={question.upvotes.includes(mongoUser._id)}
+                downvoted={question.downvotes.includes(mongoUser._id)}
+                hasSaved={mongoUser?.saved.includes(question._id)}
+              />
+            </div>
           </div>
           {/* question title */}
           <div className="h2-semibold text-dark200_light900 leading-[31px]">
