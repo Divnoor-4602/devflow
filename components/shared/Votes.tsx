@@ -12,6 +12,7 @@ import { usePathname } from "next/navigation";
 import {
   upvoteQuestion,
   downvoteQuestion,
+  toggleSaveQuestion,
 } from "@/lib/actions/question.action";
 import { downvoteAnswer, upvoteAnswer } from "@/lib/actions/answers.action";
 
@@ -38,7 +39,17 @@ const Votes = ({
 }: Props) => {
   const path = usePathname();
 
-  const handleSave = () => {};
+  const handleSave = async () => {
+    if (!userId) {
+      return;
+    }
+
+    await toggleSaveQuestion({
+      userId: JSON.parse(userId),
+      questionId: JSON.parse(itemId),
+      path,
+    });
+  };
 
   const handleVote = async (action: string) => {
     if (!userId) {
@@ -129,7 +140,10 @@ const Votes = ({
             alt="save icon"
             width={18}
             height={18}
-            onClick={() => {}}
+            className="cursor-pointer"
+            onClick={() => {
+              handleSave();
+            }}
           />
         )}
       </div>
