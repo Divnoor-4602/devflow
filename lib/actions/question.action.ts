@@ -7,6 +7,7 @@ import User from "@/database/user.model";
 import {
   CreateQuestionParams,
   GetQuestionByIdParams,
+  GetQuestionsByTagIdParams,
   GetQuestionsParams,
   GetSavedQuestionsParams,
   QuestionVoteParams,
@@ -80,7 +81,7 @@ export async function createQuestion(params: CreateQuestionParams) {
         {
           name: { $regex: new RegExp(`^${tag}$`, "i") },
         },
-        { $setOnInsert: { name: tag }, $push: { question: question._id } },
+        { $setOnInsert: { name: tag }, $push: { questions: question._id } },
 
         { upsert: true, new: true }
       ).exec();
@@ -243,6 +244,49 @@ export async function getSavedQuestion(params: GetSavedQuestionsParams) {
     const savedQuestions = user.saved;
 
     return { questions: savedQuestions };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getQuestionByTagId(params: GetQuestionsByTagIdParams) {
+  try {
+    await databaseConnect();
+    const { tagId, searchQuery, filter, pageSize } = params;
+
+    const query: FilterQuery<typeof Question> = searchQuery
+      ? { title: { $regex: new RegExp(searchQuery, "i") } }
+      : {};
+
+    // getting the tag and populating the questions field
+
+    const tag = await Tag.findById(tagId).populate({
+      path: "questions",
+      model: Question,
+      match: query,
+      options: {
+        sort: { createdAt: -1 },
+      },
+      populate: [
+        {
+          path: "author",
+          model: User,
+          select: "_id clerkId username picture name",
+        },
+        {
+          path: "tags",
+          model: Tag,
+          select: "_id name",
+        },
+      ],
+    });
+
+    if (!tag) return console.log("Tag not found!");
+
+    const questions = tag.questions;
+
+    return { tagName: tag.name, questions };
   } catch (error) {
     console.log(error);
     throw error;
