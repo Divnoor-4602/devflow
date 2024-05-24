@@ -15,7 +15,7 @@ interface NoResultProps {
   buttonLink: string;
 }
 
-const NoResult = ({ text, subtext, buttonText, buttonLink }): NoResultProps => {
+const NoResult = ({ text, subtext, buttonText, buttonLink }: NoResultProps) => {
   const { mode } = useTheme();
   return (
     <>

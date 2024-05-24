@@ -1,1 +1,1 @@
-// todo: fix tinyMCE editor dark and light mode theme
+// todo: remove all preexisitng errors before continuing to building tag details and traversal

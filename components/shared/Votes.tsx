@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import upvoteIcon from "../../public/assets/icons/upvote.svg";
 import upvotedIcon from "../../public/assets/icons/upvoted.svg";
 import downvoteIcon from "../../public/assets/icons/downvote.svg";
@@ -7,7 +7,8 @@ import downvotedIcon from "../../public/assets/icons/downvoted.svg";
 import starRed from "../../public/assets/icons/star-red.svg";
 import starRedFilled from "../../public/assets/icons/star-filled.svg";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { viewQuestion } from "@/lib/actions/interaction.action";
 
 import {
   upvoteQuestion,
@@ -38,6 +39,7 @@ const Votes = ({
   hasSaved,
 }: Props) => {
   const path = usePathname();
+  const router = useRouter();
 
   const handleSave = async () => {
     if (!userId) {
@@ -100,6 +102,13 @@ const Votes = ({
       // todo: show a toast
     }
   };
+
+  useEffect(() => {
+    viewQuestion({
+      questionId: JSON.parse(itemId),
+      userId: userId ? JSON.parse(userId) : undefined,
+    });
+  }, [itemId, userId, path, router]);
 
   return (
     <>
