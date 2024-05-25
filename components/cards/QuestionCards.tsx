@@ -1,5 +1,4 @@
 import React from "react";
-import pfp from "../../public/assets/images/pfpExample.jpeg";
 import Image from "next/image";
 import TagHolder from "../shared/TagHolder";
 import Metrics from "../shared/Metrics";
@@ -22,10 +21,12 @@ interface QuestionCardsProps {
   views: number;
   answers: number;
   createdAt: Date;
+  clerkId?: string;
 }
 
 const QuestionCards = ({
   _id,
+  clerkId,
   title,
   author,
   content,

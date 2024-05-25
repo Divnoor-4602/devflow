@@ -11,10 +11,11 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Link from "next/link";
-import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { SignedIn, SignedOut, useAuth } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 
 const NavContent = () => {
+  const { userId } = useAuth();
   const pathname = usePathname();
 
   return (
@@ -29,7 +30,11 @@ const NavContent = () => {
                 className={`${
                   isActive && "primary-gradient"
                 } flex cursor-pointer items-center justify-start gap-4 rounded-xl p-3`}
-                href={link.route}
+                href={
+                  link.route === "/profile"
+                    ? `${link.route}/${userId}`
+                    : link.route
+                }
                 key={link.label}
               >
                 <Image
