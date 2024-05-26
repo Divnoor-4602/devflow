@@ -7,9 +7,13 @@ import {
   UpdateUserParams,
   DeleteUserParams,
   GetAllUsersParams,
+  GetUserByIdParams,
+  GetUserStatsParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
+import Answer from "@/database/answer.model";
+import Tag from "@/database/tag.model";
 
 export async function getAllUsers(params: GetAllUsersParams) {
   try {
@@ -23,7 +27,7 @@ export async function getAllUsers(params: GetAllUsersParams) {
   }
 }
 
-export async function getUserById(params: any) {
+export async function getUserById(params: GetUserByIdParams) {
   try {
     await databaseConnect();
 
@@ -32,6 +36,104 @@ export async function getUserById(params: any) {
     const user = await User.findOne({ clerkId: userId });
 
     return user;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getUserQuestions(params: GetUserStatsParams) {
+  try {
+    await databaseConnect();
+
+    const { userId, page, pageSize } = params;
+
+    const user = await User.findOne({ clerkId: userId });
+
+    if (!user) throw new Error("User not found!");
+
+    // total questions
+    const totalQuestions = await Question.countDocuments({ author: user._id });
+
+    // find the questions whose author is the user
+
+    const questions = await Question.find({ author: user._id })
+      .populate({
+        path: "tags",
+        model: Tag,
+      })
+      .populate({
+        path: "author",
+        model: User,
+      })
+      .sort({ views: -1, upvotes: -1 })
+      .skip(page! > 0 ? (page! - 1) * pageSize! : 0)
+      .limit(pageSize!);
+
+    return { totalQuestions, questions };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getUserAnswers(params: GetUserStatsParams) {
+  try {
+    await databaseConnect();
+
+    const { userId, page, pageSize } = params;
+
+    // get the user by userId
+    const user = await User.findOne({ clerkId: userId });
+
+    if (!user) throw new Error("User not found!");
+
+    // count the total question documents
+    const totalAnswers = await Answer.countDocuments({ author: user._id });
+
+    // get the user answers
+    const userAnswers = await Answer.find({ author: user._id })
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id clerkId name picture",
+      })
+      .populate({
+        path: "question",
+        model: Question,
+        select: "_id title",
+      })
+      .sort({ upvotes: -1 })
+      .skip(page! > 0 ? (page! - 1) * pageSize! : 0)
+      .limit(pageSize!);
+
+    return { totalAnswers, answers: userAnswers };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getUserInfo(params: GetUserByIdParams) {
+  try {
+    await databaseConnect();
+
+    const { userId } = params;
+
+    const user = await User.findOne({ clerkId: userId });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const totalQuestions = await Question.countDocuments({ author: user._id });
+    const totalAnswers = await Answer.countDocuments({ author: user._id });
+
+    return {
+      user,
+      totalQuestions,
+      totalAnswers,
+    };
   } catch (error) {
     console.log(error);
     throw error;

@@ -53,3 +53,18 @@ export const formatAndDivideNumber = (num: number): string => {
     return num;
   }
 };
+
+export function getJoinedDate(dateString: string): string {
+  // Parse the input date string
+  const date = new Date(dateString);
+
+  // Extract the month name and the day
+  const options: Intl.DateTimeFormatOptions = {
+    month: `long`,
+    year: "numeric",
+  };
+  const formattedDate = date.toLocaleDateString("en-US", options);
+
+  // Construct the final string
+  return `Joined ${formattedDate}`;
+}

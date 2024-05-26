@@ -10,11 +10,12 @@ import userIcon from "../../../public/assets/icons/account.svg";
 import logoutIcon from "../../../public/assets/icons/Logout 3.svg";
 
 import { sidebarLinks } from "@/constants";
-import { SignedIn, SignedOut, SignOutButton } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
+import { SignedIn, SignedOut, SignOutButton, useAuth } from "@clerk/nextjs";
 
 const LeftSidebar = () => {
   const pathname = usePathname();
+
+  const { userId } = useAuth();
 
   return (
     <>
@@ -31,7 +32,11 @@ const LeftSidebar = () => {
                   className={`${
                     isActive && "primary-gradient"
                   } flex cursor-pointer items-center justify-start gap-4 rounded-xl p-3`}
-                  href={link.route}
+                  href={
+                    link.route === "/profile"
+                      ? `${link.route}/${userId}`
+                      : link.route
+                  }
                   key={index}
                 >
                   <Image
