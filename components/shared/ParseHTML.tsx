@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 
-import Prism from "prismjs";
+import { highlightAll } from "prismjs";
 import "prismjs/components/prism-java";
 import "prismjs/components/prism-c";
 import "prismjs/components/prism-cpp";
@@ -31,7 +31,7 @@ interface Props {
 
 const ParseHTML = ({ data }: Props) => {
   useEffect(() => {
-    Prism.highlightAll();
+    highlightAll();
   }, []);
 
   return (
