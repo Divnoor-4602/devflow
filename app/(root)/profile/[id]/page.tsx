@@ -81,6 +81,7 @@ const page = async ({ params }: { params: { id: string } }) => {
         </SignedIn>
       </div>
       {/* Stats */}
+
       <div className="h3-semibold text-dark200_light900 mt-10">Stats</div>
       <div className="mt-6 grid grid-cols-1 gap-4 xs:grid-cols-2 md:grid-cols-4">
         <StatCard
@@ -109,6 +110,7 @@ const page = async ({ params }: { params: { id: string } }) => {
       </div>
 
       {/* answer / top post toggle switch */}
+
       <div className="mt-10 flex gap-10">
         <Tabs defaultValue="top-posts" className="flex-1">
           <TabsList className="background-light800_dark300 min-h-[42px] min-w-[107px] rounded-r-lg  ">

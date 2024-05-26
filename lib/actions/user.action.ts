@@ -96,17 +96,18 @@ export async function getUserAnswers(params: GetUserStatsParams) {
       .populate({
         path: "author",
         model: User,
+        select: "_id clerkId name picture",
       })
       .populate({
         path: "question",
         model: Question,
-        options: { upvotes: -1 },
+        select: "_id title",
       })
       .sort({ upvotes: -1 })
       .skip(page! > 0 ? (page! - 1) * pageSize! : 0)
       .limit(pageSize!);
 
-    return { totalAnswers, userAnswers };
+    return { totalAnswers, answers: userAnswers };
   } catch (error) {
     console.log(error);
     throw error;

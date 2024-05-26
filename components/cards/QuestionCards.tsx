@@ -64,7 +64,7 @@ const QuestionCards = ({
             {/* profile image */}
             <Image
               src={author.picture}
-              alt="totoro image"
+              alt="Author profile picture"
               width={20}
               height={20}
               className="rounded-full object-contain object-center"
