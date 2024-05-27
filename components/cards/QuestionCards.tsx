@@ -3,6 +3,9 @@ import Image from "next/image";
 import TagHolder from "../shared/TagHolder";
 import Metrics from "../shared/Metrics";
 import { getTimeStamp } from "@/lib/utils";
+import { SignedIn } from "@clerk/nextjs";
+import EditDeleteAction from "../shared/EditDeleteAction";
+import Link from "next/link";
 
 interface QuestionCardsProps {
   _id: string;
@@ -36,16 +39,36 @@ const QuestionCards = ({
   answers,
   createdAt,
 }: QuestionCardsProps) => {
+  const showActionButtons = clerkId && clerkId === author.clerkId;
+
   return (
     <>
       {/* question box */}
       <div className="dark:dark-gradient flex flex-col gap-6 rounded-lg bg-light-900 px-12 py-6 shadow-sm">
         {/* header */}
         <div className="flex flex-col gap-[14px]">
-          {/* h3 question text */}
-          <div className="base-semibold sm:h3-semibold text-dark200_light900 line-clamp-1">
-            {title}
+          <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
+            <div>
+              <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
+                {getTimeStamp(createdAt)}
+              </span>
+              <Link href={`/question/${_id}`}>
+                <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
+                  {title}
+                </h3>
+              </Link>
+            </div>
+
+            <SignedIn>
+              {showActionButtons && (
+                <EditDeleteAction
+                  type="Question"
+                  itemId={JSON.stringify(_id)}
+                />
+              )}
+            </SignedIn>
           </div>
+
           {/* tags */}
           <div className="flex w-full gap-2">
             {tags.map((tag) => {

@@ -3,7 +3,7 @@ import Image from "next/image";
 import Metrics from "../shared/Metrics";
 import { formatAndDivideNumber, getTimeStamp } from "@/lib/utils";
 import { SignedIn } from "@clerk/nextjs";
-// import EditDeleteAction from "../shared/EditDeleteAction";
+import EditDeleteAction from "../shared/EditDeleteAction";
 
 interface Props {
   clerkId?: string | null;
@@ -33,24 +33,23 @@ const AnswerCard = ({
   const showActionButtons = clerkId && clerkId === author.clerkId;
 
   return (
-    <Link
-      href={`/question/${question._id}/#${_id}`}
-      className="dark:dark-gradient flex flex-col gap-6 rounded-lg bg-light-900 px-12 py-6 shadow-sm"
-    >
+    <div className="dark:dark-gradient flex flex-col gap-6 rounded-lg bg-light-900 px-12 py-6 shadow-sm">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
         <div>
           <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
             {getTimeStamp(createdAt)}
           </span>
-          <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
-            {question.title}
-          </h3>
+          <Link href={`/question/${question._id}/#${_id}`}>
+            <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
+              {question.title}
+            </h3>
+          </Link>
         </div>
 
         <SignedIn>
-          {/* {showActionButtons && (
+          {showActionButtons && (
             <EditDeleteAction type="Answer" itemId={JSON.stringify(_id)} />
-          )} */}
+          )}
         </SignedIn>
       </div>
 
@@ -81,7 +80,7 @@ const AnswerCard = ({
           <Metrics metricTitle="Votes" metricQuantity={upvotes} />
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

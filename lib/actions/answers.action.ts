@@ -3,11 +3,12 @@
 import { databaseConnect } from "../mongoose";
 import {
   AnswerVoteParams,
-  AnswerVoteParams,
   CreateAnswerParams,
+  DeleteAnswerParams,
   GetAnswersParams,
 } from "./shared.types";
 import Answer from "@/database/answer.model";
+import Interaction from "@/database/interaction.model";
 import Question from "@/database/question.model";
 import { revalidatePath } from "next/cache";
 
@@ -121,6 +122,36 @@ export async function downvoteAnswer(params: AnswerVoteParams) {
     revalidatePath(path);
 
     // todo: increase the user reputation by +10
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function deleteAnswer(params: DeleteAnswerParams) {
+  try {
+    await databaseConnect();
+
+    const { answerId, path } = params;
+
+    const answer = await Answer.findById(answerId);
+
+    const deletedAnswer = await Answer.findByIdAndDelete(answerId, {
+      new: true,
+    });
+
+    if (!deletedAnswer) throw new Error("Answer not found!");
+
+    // update questions by pulling the deleted answer from the answer list
+    await Question.updateMany(
+      { question: answer.question },
+      { $pull: { answers: answerId } }
+    );
+
+    // delete all interactions
+    await Interaction.deleteMany({ answer: answerId });
+
+    revalidatePath(path);
   } catch (error) {
     console.log(error);
     throw error;
