@@ -2,11 +2,12 @@ import React from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Inter, Space_Grotesk } from "next/font/google";
 import { dark } from "@clerk/themes";
+import { Toaster } from "sonner";
 import "./global.css";
 import "../styles/prism.css";
 
 import type { Metadata } from "next";
-import { ThemeProvider } from "@/context/ThemeProvider";
+import { ThemeProvider, useTheme } from "@/context/ThemeProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -41,6 +42,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           >
             {children}
           </ClerkProvider>
+          <Toaster richColors theme="dark" />
         </body>
       </ThemeProvider>
     </html>

@@ -1,7 +1,7 @@
 import React from "react";
 import { getUserQuestions } from "@/lib/actions/user.action";
 import QuestionCards from "../cards/QuestionCards";
-import Link from "next/link";
+import NoResult from "./NoResult";
 
 interface Props {
   userId: string;
@@ -17,12 +17,13 @@ const QuestionTab = async ({ userId, clerkId }: Props) => {
 
   return (
     <>
-      {userQuestions.questions.map((question) => {
-        return (
-          <>
-            <Link href={`/question/${question._id}`} key={question._id}>
+      {userQuestions.questions.length > 0 ? (
+        userQuestions.questions.map((question) => {
+          return (
+            <>
               <QuestionCards
                 _id={question._id}
+                key={question._id}
                 clerkId={clerkId!}
                 title={question.title}
                 author={question.author}
@@ -33,10 +34,19 @@ const QuestionTab = async ({ userId, clerkId }: Props) => {
                 answers={question.answers.length}
                 createdAt={question.createdAt}
               />
-            </Link>
-          </>
-        );
-      })}
+            </>
+          );
+        })
+      ) : (
+        <>
+          <NoResult
+            text="There's no question to show"
+            subtext="Break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 💡"
+            buttonText="Ask a Question"
+            buttonLink="ask-question"
+          />
+        </>
+      )}
     </>
   );
 };

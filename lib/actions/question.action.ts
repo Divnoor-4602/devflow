@@ -6,6 +6,7 @@ import Tag from "@/database/tag.model";
 import User from "@/database/user.model";
 import {
   CreateQuestionParams,
+  DeleteQuestionParams,
   GetQuestionByIdParams,
   GetQuestionsByTagIdParams,
   GetQuestionsParams,
@@ -15,6 +16,8 @@ import {
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import { FilterQuery } from "mongoose";
+import Answer from "@/database/answer.model";
+import Interaction from "@/database/interaction.model";
 
 export async function getQuestionById(params: GetQuestionByIdParams) {
   try {
@@ -287,6 +290,38 @@ export async function getQuestionByTagId(params: GetQuestionsByTagIdParams) {
     const questions = tag.questions;
 
     return { tagName: tag.name, questions };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function deleteQuestion(params: DeleteQuestionParams) {
+  try {
+    await databaseConnect();
+    const { questionId, path } = params;
+
+    const deletedQuestion = await Question.findByIdAndDelete(questionId, {
+      new: true,
+    });
+
+    if (!deletedQuestion) {
+      throw new Error("Question not found!");
+    }
+
+    // deleted associated answers
+    await Answer.deleteMany({ question: questionId });
+
+    // delete all interactions
+    await Interaction.deleteMany({ question: questionId });
+
+    // update the tags
+    await Tag.updateMany(
+      { question: questionId },
+      { $pull: { questions: questionId } }
+    );
+
+    revalidatePath(path);
   } catch (error) {
     console.log(error);
     throw error;
