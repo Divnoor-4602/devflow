@@ -72,7 +72,10 @@ const page = async ({ params }: { params: { id: string } }) => {
         </div>
         <SignedIn>
           {clerkId === result.user.clerkId && (
-            <Link href={`/profile/edit`} className="flex justify-end">
+            <Link
+              href={`/profile/edit/${clerkId}`}
+              className="flex justify-end"
+            >
               <Button className="background-light800_dark400 text-dark300_light900 paragraph-medium min-h-[46px] min-w-[175px] px-3 py-4">
                 Edit Profile
               </Button>
@@ -125,7 +128,7 @@ const page = async ({ params }: { params: { id: string } }) => {
             <QuestionTab userId={params.id} clerkId={clerkId!} />
           </TabsContent>
           <TabsContent value="answers" className="mt-6">
-            <AnswerTab userId={params.id} clerkId={clerkId} />
+            <AnswerTab userId={params.id} clerkId={clerkId!} />
           </TabsContent>
         </Tabs>
       </div>

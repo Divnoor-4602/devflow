@@ -4,7 +4,7 @@ import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Editor } from "@tinymce/tinymce-react";
-import { infer, z } from "zod";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,16 +18,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { QuestionSchema } from "@/lib/validations";
 import { useTheme } from "@/context/ThemeProvider";
-import { createQuestion } from "@/lib/actions/question.action";
+import { createQuestion, editQuestion } from "@/lib/actions/question.action";
 import { usePathname, useRouter } from "next/navigation";
-
-const type: any = "create";
 
 interface Props {
   mongoUserId: string;
+  type: string;
+  questionDetails?: any;
 }
 
-const Question = ({ mongoUserId }: Props) => {
+const Question = ({ mongoUserId, type, questionDetails }: Props) => {
   const { mode } = useTheme();
 
   const router = useRouter();
@@ -36,13 +36,17 @@ const Question = ({ mongoUserId }: Props) => {
   const editorRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const parsedQuestionDetails = JSON.parse(questionDetails || "");
+
+  const questionTags = parsedQuestionDetails.tags.map((tag: any) => tag.name);
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof QuestionSchema>>({
     resolver: zodResolver(QuestionSchema),
     defaultValues: {
-      title: "",
-      explanation: "",
-      tags: [],
+      title: type === "edit" ? parsedQuestionDetails.title : "",
+      explanation: type === "edit" ? parsedQuestionDetails.content : "",
+      tags: type === "edit" ? questionTags : [],
     },
   });
 
@@ -50,17 +54,31 @@ const Question = ({ mongoUserId }: Props) => {
   async function onSubmit(values: z.infer<typeof QuestionSchema>) {
     setIsSubmitting(true);
     try {
-      // make an api call and post the qquestion to the backend
-      await createQuestion({
-        title: values.title,
-        content: values.explanation,
-        tags: values.tags,
-        author: JSON.parse(mongoUserId),
-        path: pathname,
-      });
-      // contain all data
-      // navigate to the home page
-      router.push("/");
+      if (type === "edit") {
+        // call edit question else call create question
+
+        // todo: create an edit question server action
+        await editQuestion({
+          title: values.title,
+          content: values.explanation,
+          questionId: parsedQuestionDetails._id,
+          path: pathname,
+        });
+
+        router.push(`/question/${parsedQuestionDetails._id}`);
+      } else {
+        // make an api call and post the qquestion to the backend
+        await createQuestion({
+          title: values.title,
+          content: values.explanation,
+          tags: values.tags,
+          author: JSON.parse(mongoUserId),
+          path: pathname,
+        });
+        // contain all data
+        // navigate to the home page
+        router.push("/");
+      }
     } catch (error) {
       // handle error
     } finally {
@@ -144,7 +162,7 @@ const Question = ({ mongoUserId }: Props) => {
                       _evt,
                       editor // @ts-ignore
                     ) => (editorRef.current = editor)}
-                    initialValue=""
+                    initialValue={parsedQuestionDetails.content}
                     onBlur={field.onBlur}
                     onEditorChange={(content) => field.onChange(content)}
                     init={{
@@ -215,22 +233,27 @@ const Question = ({ mongoUserId }: Props) => {
                               <div
                                 key={tag}
                                 className="background-light800_dark400 subtle-medium text-dark500_light700 flex items-center gap-2 rounded-md px-4 py-2 text-[10px] uppercase"
-                                onClick={() => {
-                                  // remover tag on click
-                                  form.setValue(
-                                    "tags",
-                                    field.value.filter((t) => t !== tag)
-                                  );
-                                }}
+                                onClick={() =>
+                                  type === "edit"
+                                    ? () => {
+                                        form.setValue(
+                                          "tags",
+                                          field.value.filter((t) => t !== tag)
+                                        );
+                                      }
+                                    : () => {}
+                                }
                               >
                                 {tag}
-                                <Image
-                                  src="/assets/icons/close.svg"
-                                  alt="close icon"
-                                  width={12}
-                                  height={12}
-                                  className="dark:invert-colors cursor-pointer object-contain"
-                                />
+                                {type !== "edit" && (
+                                  <Image
+                                    src="/assets/icons/close.svg"
+                                    alt="close icon"
+                                    width={12}
+                                    height={12}
+                                    className="dark:invert-colors cursor-pointer object-contain"
+                                  />
+                                )}
                               </div>
                             </>
                           );
