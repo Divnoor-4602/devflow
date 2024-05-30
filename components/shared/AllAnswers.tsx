@@ -9,7 +9,6 @@ import { getTimeStamp } from "@/lib/utils";
 
 import ParseHTML from "./ParseHTML";
 import Votes from "./Votes";
-import { getUserById } from "@/lib/actions/user.action";
 
 interface Props {
   questionId: string;
@@ -27,8 +26,6 @@ const AllAnswers = async ({
   filter,
 }: Props) => {
   const result = await getAnswers({ questionId });
-
-  const mongoUser = await getUserById({ userId });
 
   return (
     <div className="mt-11">

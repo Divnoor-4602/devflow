@@ -9,7 +9,7 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
     databaseConnect();
 
-    const { userId, limit = 3 } = params;
+    const { userId } = params;
 
     const user = await User.findById(userId);
 
@@ -28,6 +28,25 @@ export async function getAllTags(params: GetAllTagsParams) {
     databaseConnect();
     const tags = await Tag.find({});
     return tags;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getTopPopularTags(params: GetAllTagsParams) {
+  try {
+    await databaseConnect();
+
+    const popularTags = await Tag.aggregate([
+      {
+        $project: { name: 1, numberOfQuestions: { $size: "$questions" } },
+      },
+      { $sort: { numberOfQuestions: -1 } },
+      { $limit: 5 },
+    ]);
+
+    return popularTags;
   } catch (error) {
     console.log(error);
     throw error;
