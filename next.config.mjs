@@ -1,17 +1,16 @@
+import MillionLint from '@million/lint';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "*",
-      },
-      {
-        protocol: "http",
-        hostname: "*",
-      },
-    ],
-  },
+    remotePatterns: [{
+      protocol: "https",
+      hostname: "*"
+    }, {
+      protocol: "http",
+      hostname: "*"
+    }]
+  }
 };
-
-export default nextConfig;
+export default MillionLint.next({
+  rsc: true
+})(nextConfig);

@@ -7,6 +7,7 @@ import User from "@/database/user.model";
 import {
   CreateQuestionParams,
   DeleteQuestionParams,
+  EditQuestionParams,
   GetQuestionByIdParams,
   GetQuestionsByTagIdParams,
   GetQuestionsParams,
@@ -320,6 +321,27 @@ export async function deleteQuestion(params: DeleteQuestionParams) {
       { question: questionId },
       { $pull: { questions: questionId } }
     );
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function editQuestion(params: EditQuestionParams) {
+  try {
+    await databaseConnect();
+
+    const { questionId, title, content, path } = params;
+
+    const question = await Question.findById(questionId);
+
+    if (!question) {
+      throw new Error("Question not found!");
+    }
+
+    await Question.findByIdAndUpdate(question._id, { title, content });
 
     revalidatePath(path);
   } catch (error) {
