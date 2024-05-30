@@ -2,19 +2,17 @@ import React from "react";
 import rightArrowIcon from "../../../public/assets/icons/arrow-right.svg";
 import Image from "next/image";
 import TagHolder from "../TagHolder";
+import { getHotQuestions } from "@/lib/actions/question.action";
+import { getTopPopularTags } from "@/lib/actions/tag.actions";
+import Link from "next/link";
 
-const RightSidebar = () => {
-  const demoQuestions = [
-    {
-      _id: 1,
-      title: "How to create a new project? ",
-    },
-    { _id: 2, title: "How to deploy a project?" },
-    { _id: 3, title: "How to add a new user?" },
-    { _id: 4, title: "How to create a new project?" },
-    { _id: 5, title: "How to deploy a project?" },
-    { _id: 6, title: "How to add a new user?" },
-  ];
+const RightSidebar = async () => {
+  const hotQuestions = await getHotQuestions({ page: 1, pageSize: 5 });
+
+  const topTags = await getTopPopularTags({});
+
+  console.log(topTags);
+
   const demoTags = [
     { _id: 1, name: "React", num: 100 },
     { _id: 2, name: "Node", num: 200 },
@@ -33,18 +31,20 @@ const RightSidebar = () => {
         <div className="text-dark200_light900 h3-bold">Top Questions</div>
         {/* top few popular questions */}
         <div className="mt-7 flex flex-col gap-[30px]">
-          {demoQuestions.map((question) => {
+          {hotQuestions.questions.map((question) => {
             return (
               <>
-                <div
+                <Link
+                  href={`/question/${question._id}`}
                   key={question._id}
                   className="flex w-full cursor-pointer items-center justify-between"
                 >
                   <span className="body-medium text-dark500_light700 w-[200px]">
                     {question.title}
                   </span>
+
                   <Image src={rightArrowIcon} alt="right arrow" />
-                </div>
+                </Link>
               </>
             );
           })}
@@ -52,7 +52,7 @@ const RightSidebar = () => {
         {/* Popular tags */}
         <div className="text-dark200_light900 h3-bold mt-16">Popular Tags</div>
         <div className="mt-7 flex flex-col gap-[16px]">
-          {demoTags.map((tag) => {
+          {topTags.map((tag) => {
             return (
               <div
                 key={tag._id}
@@ -60,7 +60,7 @@ const RightSidebar = () => {
               >
                 <TagHolder tagName={tag.name} />
                 <div className="text-dark500_light700 small-medium">
-                  {tag.num}
+                  {tag.numberOfQuestions}
                 </div>
               </div>
             );
