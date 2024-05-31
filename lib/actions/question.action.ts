@@ -19,6 +19,7 @@ import { revalidatePath } from "next/cache";
 import { FilterQuery } from "mongoose";
 import Answer from "@/database/answer.model";
 import Interaction from "@/database/interaction.model";
+import { Regex } from "lucide-react";
 
 export async function getQuestionById(params: GetQuestionByIdParams) {
   try {
@@ -44,8 +45,17 @@ export async function getQuestions(params: GetQuestionsParams) {
     // connect to a database
     await databaseConnect();
 
+    const { page, pageSize, searchQuery, filter } = params;
+
+    // query
+    const query: FilterQuery<typeof Question> = {};
+
+    if (searchQuery) {
+      query.$or = [{ title: { $regex: searchQuery, $options: "i" } }];
+    }
+
     // get all the questions
-    const questions = await Question.find({})
+    const questions = await Question.find(query)
       .populate({
         path: "tags",
         model: Tag,
@@ -54,6 +64,7 @@ export async function getQuestions(params: GetQuestionsParams) {
         path: "author",
         model: User,
       })
+      .limit(pageSize!)
       .sort({ createdAt: -1 });
     return questions;
   } catch (error) {
@@ -241,7 +252,12 @@ export async function getSavedQuestion(params: GetSavedQuestionsParams) {
     const { clerkId, page, pageSize, filter, searchQuery } = params;
 
     const query: FilterQuery<typeof Question> = searchQuery
-      ? { title: { $regex: new RegExp(searchQuery, "i") } }
+      ? {
+          $or: [
+            { title: { $regex: new RegExp(searchQuery, "i") } },
+            { content: { $regex: new RegExp(searchQuery, "i") } },
+          ],
+        }
       : {};
 
     const user = await User.findOne({ clerkId }).populate({
@@ -276,9 +292,14 @@ export async function getQuestionByTagId(params: GetQuestionsByTagIdParams) {
     await databaseConnect();
     const { tagId, searchQuery, filter, pageSize } = params;
 
-    const query: FilterQuery<typeof Question> = searchQuery
-      ? { title: { $regex: new RegExp(searchQuery, "i") } }
-      : {};
+    const query: FilterQuery<typeof Question> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        { title: { $regex: searchQuery || "", $options: "i" } },
+        { content: { $regex: searchQuery || "", $options: "i" } },
+      ];
+    }
 
     // getting the tag and populating the questions field
 

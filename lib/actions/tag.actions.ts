@@ -4,6 +4,7 @@ import User from "@/database/user.model";
 import Tag from "@/database/tag.model";
 import { databaseConnect } from "../mongoose";
 import { GetAllTagsParams, GetTopInteractedTagsParams } from "./shared.types";
+import { FilterQuery } from "mongoose";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
@@ -26,7 +27,20 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
 export async function getAllTags(params: GetAllTagsParams) {
   try {
     databaseConnect();
-    const tags = await Tag.find({});
+
+    const { page, filter, pageSize, searchQuery } = params;
+
+    const query: FilterQuery<typeof Tag> = {};
+
+    if (searchQuery) {
+      query.$or = [
+        {
+          name: { $regex: searchQuery, $options: "i" },
+        },
+      ];
+    }
+
+    const tags = await Tag.find(query);
     return tags;
   } catch (error) {
     console.log(error);

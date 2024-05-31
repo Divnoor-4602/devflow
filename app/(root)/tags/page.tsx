@@ -6,9 +6,10 @@ import TagCard from "@/components/cards/TagCard";
 import NoResult from "@/components/shared/NoResult";
 import Link from "next/link";
 import { TagPageFilters } from "@/constants";
+import { SearchParamsProps } from "@/types";
 
-const page = async () => {
-  const tags = await getAllTags({});
+const page = async ({ searchParams }: SearchParamsProps) => {
+  const tags = await getAllTags({ searchQuery: searchParams.q });
 
   return (
     <>
@@ -16,7 +17,7 @@ const page = async () => {
       <div className="mt-9">
         <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
           <LocalSearchBar
-            route="/community"
+            route="/tags"
             iconPosition="left"
             imgSrc="/assets/icons/search.svg"
             placeholderText="Search by tag name..."

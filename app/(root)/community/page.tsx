@@ -3,11 +3,12 @@ import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import LocalSelectFilter from "@/components/shared/filter/LocalSelectFilter";
 import UserCard from "@/components/cards/UserCard";
 import { getAllUsers } from "@/lib/actions/user.action";
+import { SearchParamsProps } from "@/types";
 
 import { CommunityPageFilters } from "@/constants";
 
-const page = async () => {
-  const users = await getAllUsers({});
+const page = async ({ searchParams }: SearchParamsProps) => {
+  const users = await getAllUsers({ searchQuery: searchParams.q });
 
   return (
     <>

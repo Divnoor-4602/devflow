@@ -9,9 +9,18 @@ import QuestionCards from "@/components/cards/QuestionCards";
 import { getQuestions } from "@/lib/actions/question.action";
 
 import { HomePageFilters } from "@/constants";
+import { SearchParamsProps } from "@/types";
 
-export default async function Home() {
-  const result = await getQuestions({});
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: SearchParamsProps;
+}) {
+  const result = await getQuestions({
+    page: 1,
+    pageSize: 10,
+    searchQuery: searchParams.q,
+  });
 
   return (
     <>
