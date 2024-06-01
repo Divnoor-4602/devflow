@@ -9,7 +9,10 @@ import { TagPageFilters } from "@/constants";
 import { SearchParamsProps } from "@/types";
 
 const page = async ({ searchParams }: SearchParamsProps) => {
-  const tags = await getAllTags({ searchQuery: searchParams.q });
+  const tags = await getAllTags({
+    searchQuery: searchParams.q,
+    filter: searchParams.filter,
+  });
 
   return (
     <>
@@ -27,7 +30,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
           <LocalSelectFilter
             filterList={TagPageFilters}
             otherClasses="min-h-[56px] sm:min-w-[170px]"
-            containerClasses="hidden max-md:flex"
+            containerClasses="flex"
           />
         </div>
         <div className="mt-8 flex flex-wrap gap-4">

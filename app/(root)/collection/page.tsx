@@ -7,7 +7,7 @@ import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import NoResult from "@/components/shared/NoResult";
 import LocalSelectFilter from "@/components/shared/filter/LocalSelectFilter";
 import { HomePageFilters } from "@/constants";
-import { SearchParamsProps, SearchParamsProps } from "@/types";
+import { SearchParamsProps } from "@/types";
 
 const page = async ({ searchParams }: SearchParamsProps) => {
   const { userId }: { userId: string | null } = auth();
@@ -17,6 +17,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
   const savedQuestions = await getSavedQuestion({
     clerkId: userId,
     searchQuery: searchParams.q,
+    filter: searchParams.filter,
   });
 
   return (
@@ -35,7 +36,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
         <LocalSelectFilter
           filterList={HomePageFilters}
           otherClasses="min-h-[56px] sm:min-w-[170px]"
-          containerClasses="hidden max-md:flex"
+          containerClasses="flex"
         />
       </div>
       {/* all saved questions */}

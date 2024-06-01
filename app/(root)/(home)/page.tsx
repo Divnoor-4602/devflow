@@ -20,6 +20,7 @@ export default async function Home({
     page: 1,
     pageSize: 10,
     searchQuery: searchParams.q,
+    filter: searchParams.filter,
   });
 
   return (

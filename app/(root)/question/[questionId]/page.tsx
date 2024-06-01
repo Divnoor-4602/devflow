@@ -9,8 +9,9 @@ import { auth } from "@clerk/nextjs/server";
 import { getUserById } from "@/lib/actions/user.action";
 import Votes from "@/components/shared/Votes";
 import AllAnswers from "@/components/shared/AllAnswers";
+import { URLProps } from "@/types";
 
-const page = async ({ params }: { params: { questionId: string } }) => {
+const page = async ({ params, searchParams }: URLProps) => {
   const question = await getQuestionById({ questionId: params.questionId });
 
   const { userId: clerkId } = auth();
@@ -89,6 +90,7 @@ const page = async ({ params }: { params: { questionId: string } }) => {
           questionId={question._id}
           userId={mongoUser._id}
           totalAnswers={question.answers.length}
+          filter={searchParams.filter}
         />
 
         {/* answer form */}

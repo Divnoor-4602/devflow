@@ -20,6 +20,7 @@ import { FilterQuery } from "mongoose";
 import Answer from "@/database/answer.model";
 import Interaction from "@/database/interaction.model";
 import { Regex } from "lucide-react";
+import { query } from "express";
 
 export async function getQuestionById(params: GetQuestionByIdParams) {
   try {
@@ -47,11 +48,32 @@ export async function getQuestions(params: GetQuestionsParams) {
 
     const { page, pageSize, searchQuery, filter } = params;
 
-    // query
+    // search query
     const query: FilterQuery<typeof Question> = {};
 
     if (searchQuery) {
-      query.$or = [{ title: { $regex: searchQuery, $options: "i" } }];
+      query.$or = [
+        { title: { $regex: searchQuery, $options: "i" } },
+        { content: { $regex: searchQuery, $options: "i" } },
+      ];
+    }
+
+    // filter option
+    let sortOptions = {};
+
+    switch (filter) {
+      case "newest":
+        sortOptions = { createdAt: -1 };
+        break;
+      case "reccomended":
+        sortOptions = { upvotes: -1 };
+        break;
+      case "frequent":
+        sortOptions = { views: -1 };
+        break;
+      case "unanswered":
+        query.answers = { $size: 0 };
+        break;
     }
 
     // get all the questions
@@ -65,7 +87,7 @@ export async function getQuestions(params: GetQuestionsParams) {
         model: User,
       })
       .limit(pageSize!)
-      .sort({ createdAt: -1 });
+      .sort(sortOptions);
     return questions;
   } catch (error) {
     console.log(error);
@@ -260,11 +282,29 @@ export async function getSavedQuestion(params: GetSavedQuestionsParams) {
         }
       : {};
 
+    // filter option
+    let sortOptions = {};
+
+    switch (filter) {
+      case "newest":
+        sortOptions = { createdAt: -1 };
+        break;
+      case "reccomended":
+        sortOptions = { upvotes: -1 };
+        break;
+      case "frequent":
+        sortOptions = { views: -1 };
+        break;
+      case "unanswered":
+        query.answers = { $size: 0 };
+        break;
+    }
+
     const user = await User.findOne({ clerkId }).populate({
       path: "saved",
       match: query,
       options: {
-        sort: { createdAt: -1 },
+        sort: sortOptions,
       },
       populate: [
         { path: "tags", model: Tag, select: "_id name" },

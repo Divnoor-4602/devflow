@@ -40,7 +40,25 @@ export async function getAllTags(params: GetAllTagsParams) {
       ];
     }
 
-    const tags = await Tag.find(query);
+    // sort options
+    let sortOptions = {};
+
+    switch (filter) {
+      case "popular":
+        sortOptions = { questions: -1 };
+        break;
+      case "recent":
+        sortOptions = { createdAt: -1 };
+        break;
+      case "old":
+        sortOptions = { createdAt: 1 };
+        break;
+      case "name":
+        sortOptions = { name: 1 };
+        break;
+    }
+
+    const tags = await Tag.find(query).sort(sortOptions);
     return tags;
   } catch (error) {
     console.log(error);

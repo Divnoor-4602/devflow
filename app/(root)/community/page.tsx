@@ -8,7 +8,10 @@ import { SearchParamsProps } from "@/types";
 import { CommunityPageFilters } from "@/constants";
 
 const page = async ({ searchParams }: SearchParamsProps) => {
-  const users = await getAllUsers({ searchQuery: searchParams.q });
+  const users = await getAllUsers({
+    searchQuery: searchParams.q,
+    filter: searchParams.filter,
+  });
 
   return (
     <>
@@ -26,7 +29,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
           <LocalSelectFilter
             filterList={CommunityPageFilters}
             otherClasses="min-h-[56px] sm:min-w-[170px]"
-            containerClasses="hidden max-md:flex"
+            containerClasses="flex"
           />
         </div>
         <div className="mt-8 flex flex-wrap gap-4">
