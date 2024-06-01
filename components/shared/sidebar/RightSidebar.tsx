@@ -11,19 +11,6 @@ const RightSidebar = async () => {
 
   const topTags = await getTopPopularTags({});
 
-  console.log(topTags);
-
-  const demoTags = [
-    { _id: 1, name: "React", num: 100 },
-    { _id: 2, name: "Node", num: 200 },
-    { _id: 3, name: "MongoDB", num: 300 },
-    { _id: 4, name: "Express", num: 400 },
-    { _id: 5, name: "React", num: 100 },
-    { _id: 6, name: "Node", num: 200 },
-    { _id: 7, name: "MongoDB", num: 300 },
-    { _id: 8, name: "Express", num: 400 },
-  ];
-
   return (
     <>
       <div className="background-light900_dark200 light-border custom-scrollbar sticky right-0 top-0 hidden h-screen w-[300px] flex-col overflow-y-auto border-l px-4 pb-4 pt-32 font-inter shadow-sm xl:flex">

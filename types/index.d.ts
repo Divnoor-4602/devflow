@@ -36,11 +36,16 @@ export interface ParamsProps {
 }
 
 export interface SearchParamsProps {
+  filter: string | undefined;
+  q: string | undefined;
   searchParams: { [key: string]: string | undefined };
 }
 
 export interface URLProps {
-  params: { id: string };
+  params: {
+    questionId: string;
+    id: string;
+  };
   searchParams: { [key: string]: string | undefined };
 }
 

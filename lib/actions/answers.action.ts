@@ -43,13 +43,31 @@ export async function getAnswers(params: GetAnswersParams) {
     databaseConnect();
     const { questionId, sortBy, page, pageSize } = params;
 
+    // sort filter query
+    let sortQuery = {};
+
+    switch (sortBy) {
+      case "highest upvotes":
+        sortQuery = { upvotes: -1 };
+        break;
+      case "lowest upvotes":
+        sortQuery = { upvotes: 1 };
+        break;
+      case "most recent":
+        sortQuery = { createdAt: -1 };
+        break;
+      case "oldest":
+        sortQuery = { createdAt: 1 };
+        break;
+    }
+
     const answers = await Answer.find({ question: questionId })
       .populate({
         path: "author",
         model: "User",
         select: "_id clerkId name picture",
       })
-      .sort({ createdAt: -1 });
+      .sort(sortQuery);
 
     return answers;
   } catch (error) {

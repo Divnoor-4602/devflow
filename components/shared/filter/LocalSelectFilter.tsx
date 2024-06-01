@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -7,6 +9,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { formUrlQuery } from "@/lib/utils";
 
 interface Props {
   filterList: {
@@ -22,10 +26,28 @@ const LocalSelectFilter = ({
   containerClasses,
   otherClasses,
 }: Props) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const paramFilter = searchParams.get("filter");
+
+  const handleTypeClick = (item: string) => {
+    const newUrl = formUrlQuery({
+      params: searchParams.toString(),
+      key: "filter",
+      value: item.toLowerCase(),
+    });
+
+    router.push(newUrl, { scroll: false });
+  };
+
   return (
     <>
       <div className={`relative ${containerClasses}`}>
-        <Select>
+        <Select
+          defaultValue={paramFilter || undefined}
+          onValueChange={handleTypeClick}
+        >
           <SelectTrigger
             className={`${otherClasses} body-regular light-border background-light800_dark300 text-dark500_light700 border px-5 py-2.5`}
           >

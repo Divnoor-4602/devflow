@@ -56,6 +56,7 @@ const Theme = () => {
               return (
                 <>
                   <DropdownMenuItem
+                    key={item.value}
                     onClick={() => {
                       setMode(item.value);
 

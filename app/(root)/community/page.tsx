@@ -3,11 +3,15 @@ import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import LocalSelectFilter from "@/components/shared/filter/LocalSelectFilter";
 import UserCard from "@/components/cards/UserCard";
 import { getAllUsers } from "@/lib/actions/user.action";
+import { SearchParamsProps } from "@/types";
 
 import { CommunityPageFilters } from "@/constants";
 
-const page = async () => {
-  const users = await getAllUsers({});
+const page = async ({ searchParams }: SearchParamsProps) => {
+  const users = await getAllUsers({
+    searchQuery: searchParams.q,
+    filter: searchParams.filter,
+  });
 
   return (
     <>
@@ -25,7 +29,7 @@ const page = async () => {
           <LocalSelectFilter
             filterList={CommunityPageFilters}
             otherClasses="min-h-[56px] sm:min-w-[170px]"
-            containerClasses="hidden max-md:flex"
+            containerClasses="flex"
           />
         </div>
         <div className="mt-8 flex flex-wrap gap-4">
