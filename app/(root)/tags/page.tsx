@@ -7,11 +7,14 @@ import NoResult from "@/components/shared/NoResult";
 import Link from "next/link";
 import { TagPageFilters } from "@/constants";
 import { SearchParamsProps } from "@/types";
+import Pagination from "@/components/shared/Pagination";
 
 const page = async ({ searchParams }: SearchParamsProps) => {
   const tags = await getAllTags({
     searchQuery: searchParams.q,
     filter: searchParams.filter,
+    page: Number(searchParams.page) || 1,
+    pageSize: 15,
   });
 
   return (
@@ -34,9 +37,9 @@ const page = async ({ searchParams }: SearchParamsProps) => {
           />
         </div>
         <div className="mt-8 flex flex-wrap gap-4">
-          {tags.length > 0 ? (
+          {tags.tags.length > 0 ? (
             <>
-              {tags.map((tag) => {
+              {tags.tags.map((tag) => {
                 return (
                   <>
                     <Link href={`/tags/${tag._id}`}>
@@ -62,6 +65,9 @@ const page = async ({ searchParams }: SearchParamsProps) => {
             </>
           )}
         </div>
+      </div>
+      <div className="mt-10">
+        <Pagination isNext={tags.isNext} />
       </div>
     </>
   );

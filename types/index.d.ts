@@ -36,6 +36,7 @@ export interface ParamsProps {
 }
 
 export interface SearchParamsProps {
+  page: number | undefined;
   filter: string | undefined;
   q: string | undefined;
   searchParams: { [key: string]: string | undefined };

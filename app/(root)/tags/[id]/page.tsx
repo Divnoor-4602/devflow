@@ -5,6 +5,7 @@ import QuestionCards from "@/components/cards/QuestionCards";
 import Link from "next/link";
 import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import { URLProps } from "@/types";
+import Pagination from "@/components/shared/Pagination";
 
 const page = async ({ params, searchParams }: URLProps) => {
   const result = await getQuestionByTagId({
@@ -58,6 +59,9 @@ const page = async ({ params, searchParams }: URLProps) => {
             />
           </>
         )}
+      </div>
+      <div className="mt-10">
+        <Pagination isNext={result.isNext} />
       </div>
     </>
   );
