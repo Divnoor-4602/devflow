@@ -15,6 +15,7 @@ import Question from "@/database/question.model";
 import Answer from "@/database/answer.model";
 import Tag from "@/database/tag.model";
 import { FilterQuery } from "mongoose";
+import { skip } from "node:test";
 
 export async function getAllUsers(params: GetAllUsersParams) {
   try {
@@ -30,6 +31,8 @@ export async function getAllUsers(params: GetAllUsersParams) {
         { username: { $regex: searchQuery, $options: "i" } },
       ];
     }
+
+    const skipAmount = (page! - 1) * pageSize!;
 
     let sortOptions = {};
 
@@ -49,8 +52,17 @@ export async function getAllUsers(params: GetAllUsersParams) {
         break;
     }
 
-    const users = await User.find(query).sort(sortOptions);
-    return users;
+    const users = await User.find(query)
+      .sort(sortOptions)
+      .limit(pageSize!)
+      .skip(skipAmount);
+
+    const totalUsers = await User.countDocuments(query);
+
+    // check if anothe page is required
+    const isNext = totalUsers > users.length + skipAmount;
+
+    return { users, isNext };
   } catch (error) {
     console.log(error);
     throw error;

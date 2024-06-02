@@ -40,6 +40,8 @@ export async function getAllTags(params: GetAllTagsParams) {
       ];
     }
 
+    const skipAmount = (page! - 1) * pageSize!;
+
     // sort options
     let sortOptions = {};
 
@@ -58,8 +60,16 @@ export async function getAllTags(params: GetAllTagsParams) {
         break;
     }
 
-    const tags = await Tag.find(query).sort(sortOptions);
-    return tags;
+    const tags = await Tag.find(query)
+      .sort(sortOptions)
+      .limit(pageSize!)
+      .skip(skipAmount);
+
+    const totalTags = await Tag.countDocuments(query);
+
+    const isNext = totalTags > tags.length + skipAmount;
+
+    return { tags, isNext };
   } catch (error) {
     console.log(error);
     throw error;

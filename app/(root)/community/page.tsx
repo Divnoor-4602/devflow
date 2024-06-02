@@ -4,13 +4,15 @@ import LocalSelectFilter from "@/components/shared/filter/LocalSelectFilter";
 import UserCard from "@/components/cards/UserCard";
 import { getAllUsers } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
-
+import Pagination from "@/components/shared/Pagination";
 import { CommunityPageFilters } from "@/constants";
 
 const page = async ({ searchParams }: SearchParamsProps) => {
   const users = await getAllUsers({
     searchQuery: searchParams.q,
     filter: searchParams.filter,
+    page: Number(searchParams.page) || 1,
+    pageSize: 12,
   });
 
   return (
@@ -33,7 +35,7 @@ const page = async ({ searchParams }: SearchParamsProps) => {
           />
         </div>
         <div className="mt-8 flex flex-wrap gap-4">
-          {users.map((user) => {
+          {users.users.map((user) => {
             return (
               <>
                 <UserCard
@@ -47,6 +49,9 @@ const page = async ({ searchParams }: SearchParamsProps) => {
             );
           })}
         </div>
+      </div>
+      <div className="mt-10">
+        <Pagination isNext={users.isNext} />
       </div>
     </>
   );

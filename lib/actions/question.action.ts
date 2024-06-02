@@ -19,8 +19,6 @@ import { revalidatePath } from "next/cache";
 import { FilterQuery } from "mongoose";
 import Answer from "@/database/answer.model";
 import Interaction from "@/database/interaction.model";
-import { Regex } from "lucide-react";
-import { query } from "express";
 
 export async function getQuestionById(params: GetQuestionByIdParams) {
   try {
@@ -86,9 +84,18 @@ export async function getQuestions(params: GetQuestionsParams) {
         path: "author",
         model: User,
       })
+      .skip((page! - 1) * pageSize!)
       .limit(pageSize!)
       .sort(sortOptions);
-    return questions;
+
+    // total question documents
+    const totalQuestions = await Question.countDocuments(query);
+
+    // questions left?
+
+    const isNext = totalQuestions > questions.length + (page! - 1) * pageSize!;
+
+    return { questions, isNext };
   } catch (error) {
     console.log(error);
     throw error;
@@ -282,6 +289,8 @@ export async function getSavedQuestion(params: GetSavedQuestionsParams) {
         }
       : {};
 
+    const skipAmount = (page! - 1) * pageSize!;
+
     // filter option
     let sortOptions = {};
 
@@ -305,6 +314,8 @@ export async function getSavedQuestion(params: GetSavedQuestionsParams) {
       match: query,
       options: {
         sort: sortOptions,
+        limit: pageSize!,
+        skip: skipAmount,
       },
       populate: [
         { path: "tags", model: Tag, select: "_id name" },
@@ -320,7 +331,12 @@ export async function getSavedQuestion(params: GetSavedQuestionsParams) {
 
     const savedQuestions = user.saved;
 
-    return { questions: savedQuestions };
+    // anymore questions?
+    const totalQuestions = savedQuestions.length;
+
+    const isNext = totalQuestions > pageSize! + skipAmount;
+
+    return { questions: savedQuestions, isNext };
   } catch (error) {
     console.log(error);
     throw error;
@@ -330,7 +346,7 @@ export async function getSavedQuestion(params: GetSavedQuestionsParams) {
 export async function getQuestionByTagId(params: GetQuestionsByTagIdParams) {
   try {
     await databaseConnect();
-    const { tagId, searchQuery, filter, pageSize } = params;
+    const { tagId, searchQuery, filter, pageSize, page } = params;
 
     const query: FilterQuery<typeof Question> = {};
 
@@ -341,6 +357,8 @@ export async function getQuestionByTagId(params: GetQuestionsByTagIdParams) {
       ];
     }
 
+    const skipAmount = (page! - 1) * pageSize!;
+
     // getting the tag and populating the questions field
 
     const tag = await Tag.findById(tagId).populate({
@@ -349,6 +367,8 @@ export async function getQuestionByTagId(params: GetQuestionsByTagIdParams) {
       match: query,
       options: {
         sort: { createdAt: -1 },
+        limit: pageSize!,
+        skip: skipAmount,
       },
       populate: [
         {
@@ -368,7 +388,11 @@ export async function getQuestionByTagId(params: GetQuestionsByTagIdParams) {
 
     const questions = tag.questions;
 
-    return { tagName: tag.name, questions };
+    // anymore questions?
+    const totalQuestions = questions.length;
+    const isNext = totalQuestions > pageSize! + skipAmount;
+
+    return { tagName: tag.name, questions, isNext };
   } catch (error) {
     console.log(error);
     throw error;

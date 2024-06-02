@@ -4,7 +4,7 @@ import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import LocalSelectFilter from "@/components/shared/filter/LocalSelectFilter";
 import HomeFilterBadges from "@/components/shared/filter/HomeFilterBadges";
 import NoResult from "@/components/shared/NoResult";
-
+import Pagination from "@/components/shared/Pagination";
 import QuestionCards from "@/components/cards/QuestionCards";
 import { getQuestions } from "@/lib/actions/question.action";
 
@@ -17,7 +17,7 @@ export default async function Home({
   searchParams: SearchParamsProps;
 }) {
   const result = await getQuestions({
-    page: 1,
+    page: searchParams.page || 1,
     pageSize: 10,
     searchQuery: searchParams.q,
     filter: searchParams.filter,
@@ -59,8 +59,8 @@ export default async function Home({
 
       {/* Question cards */}
       <div className="mt-10 flex flex-col gap-6">
-        {result.length > 0 ? (
-          result.map((question) => {
+        {result.questions.length > 0 ? (
+          result.questions.map((question) => {
             // calculating time asked since the question was asked
 
             return (
@@ -91,6 +91,9 @@ export default async function Home({
             />
           </>
         )}
+      </div>
+      <div className="mt-10 w-full">
+        <Pagination isNext={result.isNext} />
       </div>
     </>
   );

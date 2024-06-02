@@ -8,6 +8,7 @@ import NoResult from "@/components/shared/NoResult";
 import LocalSelectFilter from "@/components/shared/filter/LocalSelectFilter";
 import { HomePageFilters } from "@/constants";
 import { SearchParamsProps } from "@/types";
+import Pagination from "@/components/shared/Pagination";
 
 const page = async ({ searchParams }: SearchParamsProps) => {
   const { userId }: { userId: string | null } = auth();
@@ -18,6 +19,8 @@ const page = async ({ searchParams }: SearchParamsProps) => {
     clerkId: userId,
     searchQuery: searchParams.q,
     filter: searchParams.filter,
+    page: Number(searchParams.page) || 1,
+    pageSize: 10,
   });
 
   return (
@@ -71,6 +74,9 @@ const page = async ({ searchParams }: SearchParamsProps) => {
             />
           </>
         )}
+      </div>
+      <div className="mt-10">
+        <Pagination isNext={savedQuestions.isNext} />
       </div>
     </>
   );
