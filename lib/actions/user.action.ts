@@ -15,7 +15,6 @@ import Question from "@/database/question.model";
 import Answer from "@/database/answer.model";
 import Tag from "@/database/tag.model";
 import { FilterQuery } from "mongoose";
-import { skip } from "node:test";
 
 export async function getAllUsers(params: GetAllUsersParams) {
   try {
