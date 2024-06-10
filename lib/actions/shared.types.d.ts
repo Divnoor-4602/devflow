@@ -155,6 +155,11 @@ export interface GetUserStatsParams {
   pageSize?: number;
 }
 
+export interface getGlobalDataParams {
+  filter?: string | null;
+  searchQuery?: string | null;
+}
+
 export interface DeleteUserParams {
   clerkId: string;
 }

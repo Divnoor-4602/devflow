@@ -98,3 +98,10 @@ export const answerFilters = [
   { name: "Most Recent", value: "Most Recent" },
   { name: "Oldest", value: "Oldest" },
 ];
+
+export const globalFilters = [
+  { name: "Question", value: "Question" },
+  { name: "Answer", value: "Answer" },
+  { name: "Users", value: "User" },
+  { name: "Tags", value: "Tag" },
+];
