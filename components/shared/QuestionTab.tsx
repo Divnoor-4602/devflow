@@ -17,36 +17,38 @@ const QuestionTab = async ({ userId, clerkId }: Props) => {
 
   return (
     <>
-      {userQuestions.questions.length > 0 ? (
-        userQuestions.questions.map((question) => {
-          return (
-            <>
-              <QuestionCards
-                _id={question._id}
-                key={question._id}
-                clerkId={clerkId!}
-                title={question.title}
-                author={question.author}
-                content={question.content}
-                tags={question.tags}
-                upvotes={question.upvotes.length}
-                views={question.views}
-                answers={question.answers.length}
-                createdAt={question.createdAt}
-              />
-            </>
-          );
-        })
-      ) : (
-        <>
-          <NoResult
-            text="There's no question to show"
-            subtext="Break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 💡"
-            buttonText="Ask a Question"
-            buttonLink="ask-question"
-          />
-        </>
-      )}
+      <div className="flex flex-col gap-6">
+        {userQuestions.questions.length > 0 ? (
+          userQuestions.questions.map((question) => {
+            return (
+              <>
+                <QuestionCards
+                  _id={question._id}
+                  key={question._id}
+                  clerkId={clerkId!}
+                  title={question.title}
+                  author={question.author}
+                  content={question.content}
+                  tags={question.tags}
+                  upvotes={question.upvotes.length}
+                  views={question.views}
+                  answers={question.answers.length}
+                  createdAt={question.createdAt}
+                />
+              </>
+            );
+          })
+        ) : (
+          <>
+            <NoResult
+              text="There's no question to show"
+              subtext="Break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 💡"
+              buttonText="Ask a Question"
+              buttonLink="ask-question"
+            />
+          </>
+        )}
+      </div>
     </>
   );
 };

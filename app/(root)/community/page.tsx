@@ -7,7 +7,7 @@ import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 import { CommunityPageFilters } from "@/constants";
 
-const page = async ({ searchParams }: SearchParamsProps) => {
+const Page = async ({ searchParams }: SearchParamsProps) => {
   const users = await getAllUsers({
     searchQuery: searchParams.q,
     filter: searchParams.filter,
@@ -57,4 +57,4 @@ const page = async ({ searchParams }: SearchParamsProps) => {
   );
 };
 
-export default page;
+export default Page;
