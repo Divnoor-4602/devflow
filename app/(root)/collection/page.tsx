@@ -10,7 +10,7 @@ import { HomePageFilters } from "@/constants";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 
-const page = async ({ searchParams }: SearchParamsProps) => {
+const page = async (searchParams: SearchParamsProps) => {
   const { userId }: { userId: string | null } = auth();
 
   if (!userId) return null;
