@@ -11,7 +11,7 @@ import Votes from "@/components/shared/Votes";
 import AllAnswers from "@/components/shared/AllAnswers";
 import { URLProps } from "@/types";
 
-const page = async ({ params, searchParams }: URLProps) => {
+const Page = async ({ params, searchParams }: URLProps) => {
   const question = await getQuestionById({ questionId: params.questionId });
 
   const { userId: clerkId } = auth();
@@ -106,4 +106,4 @@ const page = async ({ params, searchParams }: URLProps) => {
   );
 };
 
-export default page;
+export default Page;
