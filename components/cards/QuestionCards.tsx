@@ -47,7 +47,7 @@ const QuestionCards = ({
       <div className="dark:dark-gradient flex flex-col gap-6 rounded-lg bg-light-900 px-12 py-6 shadow-sm">
         {/* header */}
         <div className="flex flex-col gap-[14px]">
-          <div className="flex flex-col-reverse items-end justify-between gap-5 sm:flex-row">
+          <div className="flex flex-col-reverse  justify-between gap-5 sm:flex-row">
             <div>
               <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
                 {getTimeStamp(createdAt)}

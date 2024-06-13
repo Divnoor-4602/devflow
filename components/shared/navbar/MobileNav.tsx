@@ -64,7 +64,7 @@ const MobileNav = () => {
   return (
     <>
       <Sheet>
-        <SheetTrigger asChild>
+        <SheetTrigger>
           <Image
             src={hamburger}
             alt="hamburger menu"

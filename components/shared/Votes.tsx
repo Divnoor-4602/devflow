@@ -16,6 +16,7 @@ import {
   toggleSaveQuestion,
 } from "@/lib/actions/question.action";
 import { downvoteAnswer, upvoteAnswer } from "@/lib/actions/answers.action";
+import { toast } from "sonner";
 
 interface Props {
   item: string;
@@ -77,7 +78,7 @@ const Votes = ({
         });
       }
 
-      // todo: show a toast
+      upvoted ? toast("Removed upvote") : toast("Upvoted 👍");
     }
 
     if (action === "downvote") {
@@ -99,7 +100,7 @@ const Votes = ({
         });
       }
 
-      // todo: show a toast
+      downvoted ? toast("Removed downvote") : toast("Downvoted 👎");
     }
   };
 

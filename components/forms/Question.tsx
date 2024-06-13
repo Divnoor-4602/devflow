@@ -20,6 +20,7 @@ import { QuestionSchema } from "@/lib/validations";
 import { useTheme } from "@/context/ThemeProvider";
 import { createQuestion, editQuestion } from "@/lib/actions/question.action";
 import { usePathname, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface Props {
   mongoUserId: string;
@@ -68,6 +69,10 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
           path: pathname,
         });
 
+        toast.success("Question edited successfully", {
+          description: "Keep refining your question!",
+        });
+
         router.push(`/question/${parsedQuestionDetails._id}`);
       } else {
         // make an api call and post the qquestion to the backend
@@ -81,9 +86,14 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
         // contain all data
         // navigate to the home page
         router.push("/");
+
+        toast.success("Question created successfully", {
+          description: "Keep making noise!",
+        });
       }
     } catch (error) {
       // handle error
+      toast.error("An error occurred. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }

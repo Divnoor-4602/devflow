@@ -17,8 +17,9 @@ import QuestionTab from "../../../../components/shared/QuestionTab";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProfileLink from "@/components/shared/ProfileLink";
+import { URLProps } from "@/types";
 
-const Page = async ({ params }: { params: { id: string } }) => {
+const Page = async ({ params }: URLProps) => {
   // check if the profile view is of the current logged in user
   const { userId: clerkId }: { userId: string | null } = auth();
 
@@ -96,19 +97,19 @@ const Page = async ({ params }: { params: { id: string } }) => {
           type="badge"
           imgUrl={goldBadge}
           title="Gold Badges"
-          badgeQuantity={1}
+          badgeQuantity={result.badges.GOLD}
         />
         <StatCard
           type="badge"
           imgUrl={silverBadge}
           title="Silver Badges"
-          badgeQuantity={1}
+          badgeQuantity={result.badges.SILVER}
         />
         <StatCard
           type="badge"
           imgUrl={bronzeBadge}
           title="Bronze Badges"
-          badgeQuantity={1}
+          badgeQuantity={result.badges.BRONZE}
         />
       </div>
 
