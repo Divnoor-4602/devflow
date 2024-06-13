@@ -9,7 +9,7 @@ import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import NoResult from "@/components/shared/NoResult";
 import LocalSelectFilter from "@/components/shared/filter/LocalSelectFilter";
 import { HomePageFilters } from "@/constants";
-
+import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 
 // interface CollectionProps {
@@ -19,7 +19,11 @@ import Pagination from "@/components/shared/Pagination";
 //   searchParams: { [key: string]: string | undefined };
 // }
 
-const CollectionPage = async ({ searchParams }: any) => {
+const CollectionPage = async ({
+  searchParams,
+}: {
+  searchParams: SearchParamsProps;
+}) => {
   const { userId }: { userId: string | null } = auth();
 
   if (!userId) return null;
