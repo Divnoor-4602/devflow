@@ -96,7 +96,7 @@ export async function POST(req: Request) {
     const { id } = evt.data;
 
     // delete the mongo user
-    const mongoUserDeleted = await deleteUser({
+    await deleteUser({
       clerkId: id!,
     });
   }

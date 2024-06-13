@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { getUserById } from "@/lib/actions/user.action";
 
-const Page = async () => {
+export default async function Page() {
   const { userId } = auth();
 
   // if user id does not exist in clerk redirect to login
@@ -26,6 +26,4 @@ const Page = async () => {
       </div>
     </div>
   );
-};
-
-export default Page;
+}

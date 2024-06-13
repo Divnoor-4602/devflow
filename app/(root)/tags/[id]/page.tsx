@@ -7,7 +7,7 @@ import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import { URLProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 
-const Page = async ({ params, searchParams }: URLProps) => {
+export default async function Page({ params, searchParams }: URLProps) {
   const result = await getQuestionByTagId({
     tagId: params.id,
     searchQuery: searchParams.q,
@@ -65,6 +65,4 @@ const Page = async ({ params, searchParams }: URLProps) => {
       </div>
     </>
   );
-};
-
-export default Page;
+}

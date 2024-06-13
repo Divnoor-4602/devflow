@@ -42,7 +42,7 @@ export async function createAnswer(params: CreateAnswerParams) {
 export async function getAnswers(params: GetAnswersParams) {
   try {
     databaseConnect();
-    const { questionId, sortBy, page, pageSize } = params;
+    const { questionId, sortBy } = params;
 
     // sort filter query
     let sortQuery = {};

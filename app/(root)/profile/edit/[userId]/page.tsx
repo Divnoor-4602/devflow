@@ -2,7 +2,7 @@ import React from "react";
 import EditProfile from "@/components/forms/EditProfile";
 import { getUserById } from "@/lib/actions/user.action";
 
-const Page = async ({ params }: { params: { userId: string } }) => {
+export default async function Page({ params }: { params: { userId: string } }) {
   const user = await getUserById({ userId: params.userId });
 
   return (
@@ -11,6 +11,4 @@ const Page = async ({ params }: { params: { userId: string } }) => {
       <EditProfile userDetails={JSON.stringify(user)} />
     </>
   );
-};
-
-export default Page;
+}

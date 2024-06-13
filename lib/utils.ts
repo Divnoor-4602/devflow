@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import qs from "query-string";
 import { BADGE_CRITERIA } from "@/constants";
-import { BadgeCounts, BadgeCounts } from "@/types";
+import { BadgeCounts } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -52,7 +52,7 @@ export const formatAndDivideNumber = (num: number): string => {
     const formattedNum = (num / 1000).toFixed(1);
     return `${formattedNum}K`;
   } else {
-    return num;
+    return num.toString();
   }
 };
 

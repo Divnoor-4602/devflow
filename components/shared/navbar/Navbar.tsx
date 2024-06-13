@@ -21,7 +21,6 @@ const Navbar = () => {
             Dev<span className="text-primary-500">Overflow</span>
           </p>
         </Link>
-        {/* global search */}
         <GlobalSearch />
         {/* profile and theme switcher */}
         <div className="flex-between flex items-center gap-5">

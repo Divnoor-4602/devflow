@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import Metrics from "../shared/Metrics";
-import { formatAndDivideNumber, getTimeStamp } from "@/lib/utils";
+import { getTimeStamp } from "@/lib/utils";
 import { SignedIn } from "@clerk/nextjs";
 import EditDeleteAction from "../shared/EditDeleteAction";
 

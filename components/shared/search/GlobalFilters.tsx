@@ -11,8 +11,6 @@ const GlobalFilters = () => {
 
   const [active, setActive] = useState("");
 
-  const globalFilter = searchParams.get("type");
-
   const handleTypeClick = (item: string) => {
     if (active === item) {
       setActive("");
