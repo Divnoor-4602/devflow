@@ -155,7 +155,15 @@ export async function createQuestion(params: CreateQuestionParams) {
       $push: { tags: { $each: tagDocuments } },
     });
 
-    // interaction on the question, increment author's reputation +5
+    await Interaction.create({
+      user: author,
+      question: question._id,
+      action: "ask_question",
+      tags: tagDocuments,
+    });
+
+    //  increment author's reputation +5
+    await User.findByIdAndUpdate(author, { $inc: { reputation: 5 } });
 
     revalidatePath(path);
   } catch (error) {
@@ -171,8 +179,6 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
 
     const { questionId, userId, hasupVoted, hasdownVoted, path } = params;
 
-    console.log("questionId", questionId);
-
     let updateQuery = {};
 
     if (hasupVoted) {
@@ -186,6 +192,11 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
       updateQuery = { $addToSet: { upvotes: userId } };
     }
 
+    // update the upvoter's reputation by 1
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasupVoted ? -1 : 1 },
+    });
+
     const question = await Question.findByIdAndUpdate(questionId, updateQuery, {
       new: true,
     });
@@ -197,6 +208,9 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
     revalidatePath(path);
 
     // increase the author's reputation by +10
+    await User.findByIdAndUpdate(question.author._id, {
+      $inc: { reputation: hasupVoted ? -10 : 10 },
+    });
   } catch (error) {
     console.log(error);
     throw error;
@@ -222,6 +236,11 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
       updateQuery = { $addToSet: { downvotes: userId } };
     }
 
+    // update the downvoter's reputation by 1
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasdownVoted ? 1 : -1 },
+    });
+
     const question = await Question.findByIdAndUpdate(questionId, updateQuery, {
       new: true,
     });
@@ -229,6 +248,10 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
     if (!question) {
       throw new Error("Question not found!");
     }
+
+    await User.findByIdAndUpdate(question.author._id, {
+      $inc: { reputation: hasdownVoted ? 10 : -10 },
+    });
 
     revalidatePath(path);
   } catch (error) {

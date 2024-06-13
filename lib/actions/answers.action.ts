@@ -9,6 +9,7 @@ import {
 } from "./shared.types";
 import Answer from "@/database/answer.model";
 import Interaction from "@/database/interaction.model";
+import User from "@/database/user.model";
 import Question from "@/database/question.model";
 import { revalidatePath } from "next/cache";
 
@@ -29,9 +30,9 @@ export async function createAnswer(params: CreateAnswerParams) {
       $push: { answers: answer._id },
     });
 
-    revalidatePath(path);
+    await User.findByIdAndUpdate(author, { $inc: { reputation: 10 } });
 
-    // todo: add interaction to increase user reputation
+    revalidatePath(path);
   } catch (error) {
     console.log(error);
     throw error;
@@ -95,6 +96,10 @@ export async function upvoteAnswer(params: AnswerVoteParams) {
       updateQuery = { $addToSet: { upvotes: userId } };
     }
 
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasupVoted ? -2 : 2 },
+    });
+
     const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, {
       new: true,
     });
@@ -102,6 +107,10 @@ export async function upvoteAnswer(params: AnswerVoteParams) {
     if (!answer) {
       throw new Error("Answer not found!");
     }
+
+    await User.findByIdAndUpdate(answer.author, {
+      $inc: { reputation: hasupVoted ? -10 : 10 },
+    });
 
     revalidatePath(path);
   } catch (error) {
@@ -129,6 +138,10 @@ export async function downvoteAnswer(params: AnswerVoteParams) {
       updateQuery = { $addToSet: { downvotes: userId } };
     }
 
+    await User.findByIdAndUpdate(userId, {
+      $inc: { reputation: hasdownVoted ? 2 : -2 },
+    });
+
     const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, {
       new: true,
     });
@@ -137,9 +150,11 @@ export async function downvoteAnswer(params: AnswerVoteParams) {
       throw new Error("Answer not found!");
     }
 
-    revalidatePath(path);
+    await User.findByIdAndUpdate(answer.author, {
+      $inc: { reputation: hasdownVoted ? 10 : -10 },
+    });
 
-    // todo: increase the user reputation by +10
+    revalidatePath(path);
   } catch (error) {
     console.log(error);
     throw error;

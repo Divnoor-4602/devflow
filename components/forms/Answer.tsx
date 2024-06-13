@@ -20,7 +20,7 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { createAnswer } from "@/lib/actions/answers.action";
 import { usePathname } from "next/navigation";
-import path from "path";
+import { toast } from "sonner";
 
 interface Props {
   question: string;
@@ -31,6 +31,7 @@ interface Props {
 const Answer = ({ question, questionId, authorId }: Props) => {
   const pathname = usePathname();
   const [isSubmitting, setisSubmitting] = useState(false);
+  const [isSubmittingAI, setSetIsSubmittingAI] = useState(false);
   const editorRef = useRef(null);
   const { mode } = useTheme();
   const form = useForm<z.infer<typeof AnswerSchema>>({
@@ -56,10 +57,49 @@ const Answer = ({ question, questionId, authorId }: Props) => {
         const editor = editorRef.current as any;
         editor.setContent("");
       }
+
+      toast.success("Answer created succesfully!");
     } catch (error) {
       console.log(error);
+      toast.error("An error occurred. Please try again later.");
     } finally {
       setisSubmitting(false);
+    }
+  };
+
+  const generateAIAnswer = async () => {
+    if (!authorId) return;
+
+    setSetIsSubmittingAI(true);
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`,
+        {
+          method: "POST",
+          body: JSON.stringify({ question }),
+        }
+      );
+
+      const aiAnswer = await response.json();
+
+      // Convert plain text to HTML format
+
+      const formattedAnswer = aiAnswer.reply.replace(/\n/g, "<br />");
+
+      if (editorRef.current) {
+        const editor = editorRef.current as any;
+        editor.setContent(formattedAnswer);
+      }
+
+      toast.success("AI answer generated successfully 🤩", {
+        description: "You can now edit the answer if you want to.",
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to generate AI answer 😢");
+    } finally {
+      setSetIsSubmittingAI(false);
     }
   };
 
@@ -75,7 +115,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
           </div>
           <Button
             className="background-light800_dark300 btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500 shadow-none"
-            onClick={() => {}}
+            onClick={generateAIAnswer}
           >
             <Image
               src="/assets/icons/stars.svg"

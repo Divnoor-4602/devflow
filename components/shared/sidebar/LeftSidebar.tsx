@@ -10,12 +10,13 @@ import userIcon from "../../../public/assets/icons/account.svg";
 import logoutIcon from "../../../public/assets/icons/Logout 3.svg";
 
 import { sidebarLinks } from "@/constants";
-import { SignedIn, SignedOut, SignOutButton, useAuth } from "@clerk/nextjs";
+import { SignedIn, SignedOut, useAuth, useClerk } from "@clerk/nextjs";
 
 const LeftSidebar = () => {
   const pathname = usePathname();
 
   const { userId } = useAuth();
+  const { signOut } = useClerk();
 
   return (
     <>
@@ -96,20 +97,21 @@ const LeftSidebar = () => {
           </div>
         </SignedOut>
         <SignedIn>
-          <SignOutButton redirectUrl="/">
-            <button className="text-dark300_light900 base-medium flex w-full items-center gap-3 px-3">
-              <span className="">
-                <Image
-                  src={logoutIcon}
-                  alt="logout icon"
-                  width={20}
-                  height={20}
-                  className="invert-colors"
-                />
-              </span>
-              <span className="hidden lg:block">Logout</span>
-            </button>
-          </SignOutButton>
+          <button
+            className="text-dark300_light900 base-medium flex w-full cursor-pointer items-center gap-3 px-3"
+            onClick={() => signOut({ redirectUrl: "/" })}
+          >
+            <span className="">
+              <Image
+                src={logoutIcon}
+                alt="logout icon"
+                width={20}
+                height={20}
+                className="invert-colors"
+              />
+            </span>
+            <span className="hidden lg:block">Logout</span>
+          </button>
         </SignedIn>
       </div>
     </>
