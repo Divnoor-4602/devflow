@@ -7,7 +7,6 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "../ui/form";
 import { useForm } from "react-hook-form";
@@ -123,7 +122,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
               width={12}
               height={12}
             />
-            Generate AI answer
+            {isSubmittingAI ? "Generating..." : "Generate AI answer"}
           </Button>
         </div>
         {/* answer tiny mce editor */}

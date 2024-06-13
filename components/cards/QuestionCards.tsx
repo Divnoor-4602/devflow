@@ -5,7 +5,6 @@ import Metrics from "../shared/Metrics";
 import { getTimeStamp } from "@/lib/utils";
 import { SignedIn } from "@clerk/nextjs";
 import EditDeleteAction from "../shared/EditDeleteAction";
-import Link from "next/link";
 
 interface QuestionCardsProps {
   _id: string;
@@ -14,6 +13,7 @@ interface QuestionCardsProps {
     _id: string;
     name: string;
     picture: string;
+    clerkId: string | undefined;
   };
   content: string;
   tags: {

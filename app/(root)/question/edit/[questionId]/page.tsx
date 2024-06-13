@@ -4,7 +4,11 @@ import { auth } from "@clerk/nextjs/server";
 import { getUserById } from "@/lib/actions/user.action";
 import { getQuestionById } from "@/lib/actions/question.action";
 
-const Page = async ({ params }: { params: { questionId: string } }) => {
+export default async function Page({
+  params,
+}: {
+  params: { questionId: string };
+}) {
   const question = await getQuestionById({ questionId: params.questionId });
 
   console.log(question);
@@ -27,6 +31,4 @@ const Page = async ({ params }: { params: { questionId: string } }) => {
       />
     </>
   );
-};
-
-export default Page;
+}

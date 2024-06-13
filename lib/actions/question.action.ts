@@ -106,7 +106,7 @@ export async function getHotQuestions(params: GetQuestionsParams) {
   try {
     await databaseConnect();
 
-    const { page, pageSize, searchQuery, filter } = params;
+    const { pageSize } = params;
 
     const questions = await Question.find()
       .sort({ upvotes: -1, views: -1 })
@@ -369,7 +369,7 @@ export async function getSavedQuestion(params: GetSavedQuestionsParams) {
 export async function getQuestionByTagId(params: GetQuestionsByTagIdParams) {
   try {
     await databaseConnect();
-    const { tagId, searchQuery, filter, pageSize, page } = params;
+    const { tagId, searchQuery, pageSize, page } = params;
 
     const query: FilterQuery<typeof Question> = {};
 

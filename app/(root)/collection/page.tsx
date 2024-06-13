@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import React from "react";
 import { getSavedQuestion } from "@/lib/actions/question.action";
 import { auth } from "@clerk/nextjs/server";
@@ -12,18 +10,11 @@ import { HomePageFilters } from "@/constants";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 
-// interface CollectionProps {
-//   page: number | undefined;
-//   filter: string | undefined;
-//   q: string | undefined;
-//   searchParams: { [key: string]: string | undefined };
-// }
-
-const CollectionPage = async ({
+export default async function Page({
   searchParams,
 }: {
   searchParams: SearchParamsProps;
-}) => {
+}) {
   const { userId }: { userId: string | null } = auth();
 
   if (!userId) return null;
@@ -93,6 +84,4 @@ const CollectionPage = async ({
       </div>
     </>
   );
-};
-
-export default CollectionPage;
+}

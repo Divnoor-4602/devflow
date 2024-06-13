@@ -14,18 +14,6 @@ interface ProfileCardProps {
   username: string;
 }
 
-const tags = [
-  {
-    tagName: "HTML",
-  },
-  {
-    tagName: "REACT",
-  },
-  {
-    tagName: "CSS",
-  },
-];
-
 const UserCard = async ({ _id, name, picture, username }: ProfileCardProps) => {
   const interactedTags = await getTopInteractedTags({ userId: _id });
 
