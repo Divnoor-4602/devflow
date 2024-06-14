@@ -18,6 +18,22 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProfileLink from "@/components/shared/ProfileLink";
 import { URLProps } from "@/types";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: URLProps): Promise<Metadata> {
+  const { userId: clerkId }: { userId: string | null } = auth();
+
+  const result = await getUserInfo({ userId: params.id });
+  return {
+    title: result.user.name,
+    description: `View the profile of ${result.user.name}`,
+    openGraph: {
+      images: [{ url: result.user.picture, alt: "profile picture" }],
+    },
+  };
+}
 
 export default async function Page({ params }: URLProps) {
   // check if the profile view is of the current logged in user

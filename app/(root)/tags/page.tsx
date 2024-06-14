@@ -8,6 +8,13 @@ import Link from "next/link";
 import { TagPageFilters } from "@/constants";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Tags",
+  description:
+    "Discover and explore tags on DevFlow to find topics and programming questions that interest you. Browse through popular tags, follow your favorite ones, and stay updated with the latest discussions. Join DevFlow today and enhance your coding knowledge!",
+};
 
 export default async function Page({
   searchParams,
