@@ -7,9 +7,13 @@ import NoResult from "@/components/shared/NoResult";
 import Pagination from "@/components/shared/Pagination";
 import QuestionCards from "@/components/cards/QuestionCards";
 import { getQuestions } from "@/lib/actions/question.action";
-
+import { Metadata } from "next";
 import { HomePageFilters } from "@/constants";
 import { SearchParamsProps } from "@/types";
+
+export const metadata: Metadata = {
+  title: "Home",
+};
 
 export default async function Home({
   searchParams,

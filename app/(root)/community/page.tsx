@@ -6,6 +6,13 @@ import { getAllUsers } from "@/lib/actions/user.action";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
 import { CommunityPageFilters } from "@/constants";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Community",
+  description:
+    "Explore the DevFlow community and connect with fellow developers. See all signed-up users, discover profiles, and engage with a network of programming enthusiasts. Join DevFlow today and become part of a vibrant developer community!",
+};
 
 export default async function Page({
   searchParams,

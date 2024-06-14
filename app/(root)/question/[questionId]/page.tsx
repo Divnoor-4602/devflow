@@ -10,6 +10,30 @@ import { getUserById } from "@/lib/actions/user.action";
 import Votes from "@/components/shared/Votes";
 import AllAnswers from "@/components/shared/AllAnswers";
 import { URLProps } from "@/types";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: URLProps): Promise<Metadata> {
+  const question = await getQuestionById({ questionId: params.questionId });
+
+  const { userId: clerkId } = auth();
+
+  let mongoUser;
+
+  if (clerkId) {
+    mongoUser = await getUserById({ userId: clerkId });
+  }
+
+  return {
+    title: question.title,
+    description: question.content,
+    openGraph: {
+      images: [{ url: question.author.picture, alt: "author picture" }],
+    },
+  };
+}
 
 export default async function Page({ params, searchParams }: URLProps) {
   const question = await getQuestionById({ questionId: params.questionId });

@@ -9,6 +9,13 @@ import LocalSelectFilter from "@/components/shared/filter/LocalSelectFilter";
 import { HomePageFilters } from "@/constants";
 import { SearchParamsProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Collections",
+  description:
+    "Save and organize your favorite programming questions on DevFlow. Create collections to easily access and manage the most helpful answers and resources from the developer community. Join DevFlow today and streamline your coding journey!",
+};
 
 export default async function Page({
   searchParams,

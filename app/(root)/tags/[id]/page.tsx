@@ -6,6 +6,22 @@ import Link from "next/link";
 import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import { URLProps } from "@/types";
 import Pagination from "@/components/shared/Pagination";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: URLProps): Promise<Metadata> {
+  const result = await getQuestionByTagId({
+    tagId: params.id,
+    searchQuery: searchParams.q,
+  });
+
+  return {
+    title: `Questions related to ${result?.tagName}`,
+    description: `Questions related to ${result?.tagName}`,
+  };
+}
 
 export default async function Page({ params, searchParams }: URLProps) {
   const result = await getQuestionByTagId({
