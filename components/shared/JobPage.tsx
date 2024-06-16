@@ -102,8 +102,8 @@ const JobPage = () => {
             ) : (
               <>
                 <NoResult
-                  text="No Jobs to Show Right Now!"
-                  subtext="Try again later :("
+                  text="No Jobs to Show Right Now! 💼"
+                  subtext="Don't be disheartened, try again later or search for jobs in another area by filling in a location and clicking on search jobs!🥤"
                   buttonText="Home"
                   buttonLink=""
                 />

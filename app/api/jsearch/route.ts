@@ -18,7 +18,7 @@ export const GET = async (request: Request) => {
 
     const responseData = await response.json();
     return NextResponse.json(responseData.data);
-  } catch (error) {
-    throw error;
+  } catch (error: any) {
+    NextResponse.json({ error: error.message });
   }
 };
