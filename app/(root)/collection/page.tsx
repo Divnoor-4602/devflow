@@ -14,7 +14,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Collections",
   description:
-    "Save and organize your favorite programming questions on DevFlow. Create collections to easily access and manage the most helpful answers and resources from the developer community. Join DevFlow today and streamline your coding journey!",
+    "Save and organize your favorite prog{{{ramming questions on DevFlow. Create collections to easily access and manage the most helpful answers and resources from the developer community. Join DevFlow today and streamline your coding journey!",
 };
 
 export default async function Page({

@@ -71,6 +71,13 @@ export function getJoinedDate(dateString: string): string {
   return `Joined ${formattedDate}`;
 }
 
+export function formatNumberToK(num: number): string {
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+  }
+  return num.toString();
+}
+
 interface UrlQueryParams {
   params: string;
   key: string;
