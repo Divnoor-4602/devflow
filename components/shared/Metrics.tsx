@@ -21,7 +21,7 @@ const Metrics = ({ metricTitle, metricQuantity }: MetricsProps) => {
   return (
     <>
       <div className="flex items-center gap-1">
-        <Image src={icon} alt="icon" />
+        <Image src={icon} alt="icon" className="mb-1" />
         <div className="text-dark400_light700 small-regular">
           {metricQuantity} {metricTitle}
         </div>

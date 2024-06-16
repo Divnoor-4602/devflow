@@ -11,7 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Link from "next/link";
-import { SignedIn, SignedOut, useAuth } from "@clerk/nextjs";
+import { SignedIn, SignedOut, useAuth, useClerk } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 
 const NavContent = () => {
@@ -61,6 +61,7 @@ const NavContent = () => {
 };
 
 const MobileNav = () => {
+  const { signOut } = useClerk();
   return (
     <>
       <Sheet>
@@ -97,16 +98,16 @@ const MobileNav = () => {
             {/* nav action buttons */}
             <div className="w-full">
               <SignedOut>
-                <SheetClose>
+                <SheetClose className="w-full">
                   <div className="flex w-full flex-col gap-4">
                     <Link
-                      className="btn-secondary flex items-center justify-center rounded-lg p-2 text-sm text-primary-500"
+                      className="btn-secondary flex items-center justify-center rounded-lg p-2 text-sm text-primary-500 w-full"
                       href={"/sign-in"}
                     >
                       <span className="">Log In</span>
                     </Link>
                     <Link
-                      className="btn-tertiary flex items-center justify-center rounded-lg border p-2 text-sm dark:border-slate-800"
+                      className="btn-tertiary flex items-center justify-center rounded-lg border p-2 text-sm dark:border-slate-800 w-full"
                       href={"/sign-up"}
                     >
                       <span className="">Sign up</span>
@@ -115,14 +116,14 @@ const MobileNav = () => {
                 </SheetClose>
               </SignedOut>
               <SignedIn>
-                <Link
+                <button
                   className="btn-tertiary mt-10 flex w-full items-center justify-center rounded-lg border p-2 text-sm  dark:border-slate-800"
-                  href={"/"}
+                  onClick={() => signOut({ redirectUrl: "/" })}
                 >
                   <span className="text-dark-400 dark:text-light-700">
                     Logout
                   </span>
-                </Link>
+                </button>
               </SignedIn>
             </div>
           </div>

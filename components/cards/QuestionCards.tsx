@@ -102,7 +102,7 @@ const QuestionCards = ({
             </div>
           </div>
           {/* Statistics */}
-          <div className="flex flex-wrap gap-[9px]">
+          <div className="flex flex-wrap gap-[9px] items-center">
             <Metrics metricTitle="Votes" metricQuantity={upvotes} />
             <Metrics metricTitle="Answers" metricQuantity={answers} />
             <Metrics metricTitle="Views" metricQuantity={views} />
