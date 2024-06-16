@@ -47,8 +47,8 @@ const JobPage = () => {
         const location = await locationResponse.json();
 
         await getJobs(
-          `NextJS jobs in ${location.data.city || ""}, ${
-            location.data.country_name || ""
+          `NextJS jobs in ${location.data.city || "Chandigarh"}, ${
+            location.data.country_name || "India"
           }`,
           "1"
         );
