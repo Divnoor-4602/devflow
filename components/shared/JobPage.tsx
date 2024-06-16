@@ -8,6 +8,7 @@ import { useSearchParams } from "next/navigation";
 import SkeletonCard from "../cards/SkeletonCard";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
+import NoResult from "./NoResult";
 
 const JobPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -46,7 +47,9 @@ const JobPage = () => {
         const location = await locationResponse.json();
 
         await getJobs(
-          `NextJS jobs in ${location.data.city}, ${location.data.country_name}`,
+          `NextJS jobs in ${location.data.city || ""}, ${
+            location.data.country_name || ""
+          }`,
           "1"
         );
       } catch (error) {
@@ -82,19 +85,30 @@ const JobPage = () => {
           </>
         ) : (
           <>
-            {jobs.map((job: any) => (
-              <JobCard
-                title={job.job_title}
-                action={job.type || "Developer"}
-                description={job.job_description}
-                image={job.employer_logo}
-                salary={job.job_max_salary || "Not specified"}
-                location={job.job_city + ", " + job.job_country}
-                locationImage={job.job_country}
-                jobGoogleLink={job.job_google_link}
-                type={job.job_employment_type}
-              />
-            ))}
+            {jobs.length > 0 ? (
+              jobs.map((job: any) => (
+                <JobCard
+                  title={job.job_title}
+                  action={job.type || "Developer"}
+                  description={job.job_description}
+                  image={job.employer_logo}
+                  salary={job.job_max_salary || "Not specified"}
+                  location={job.job_city + ", " + job.job_country}
+                  locationImage={job.job_country}
+                  jobGoogleLink={job.job_google_link}
+                  type={job.job_employment_type}
+                />
+              ))
+            ) : (
+              <>
+                <NoResult
+                  text="No Jobs to Show Right Now!"
+                  subtext="Try again later :("
+                  buttonText="Home"
+                  buttonLink=""
+                />
+              </>
+            )}
           </>
         )}
       </div>
